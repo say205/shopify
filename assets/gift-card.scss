@@ -30,9 +30,9 @@ $grid-breakpoint-has-push: ($small, $medium-up);
 /*================ Color Variables ================*/
 
 // Text colors
-$color-text: #69727b;
+$color-text: #5a5a5a;
 $color-text-shadow: rgba(0,0,0,0.4);
-$color-body-text: #69727b;
+$color-body-text: #5a5a5a;
 
 
 // Backgrounds
@@ -90,7 +90,7 @@ $z-index-announcement-bar: 10;
 $z-index-skip-to-content: 10000; // really high to be safe of app markup
 
 /*================ SVG ================*/
-$svg-select-icon: #{'//cdn.shopify.com/s/files/1/0264/5000/1980/t/2/assets/ico-select.svg?v=6452571227815138006'};
+$svg-select-icon: #{'//cdn.shopify.com/s/files/1/0281/5600/2440/t/13/assets/ico-select.svg?v=16650056502941319033'};
 
 /*================ Drawers ================*/
 $transition-drawer: all 0.45s cubic-bezier(0.29, 0.63, 0.44, 1);
@@ -105,59 +105,73 @@ $color-slideshow-dots: #fff;
 
 
 @font-face {
-  font-family: "Work Sans";
-  font-weight: 600;
-  font-style: normal;
-  src: url("https://fonts.shopifycdn.com/work_sans/worksans_n6.136d99375282ffb6ea8c3dc4a8fe189c7be691b2.woff2?&hmac=7867d42165701e7ee4f032630a1e63ce3ad64eccd01272ef324bd131e1ac1e1a") format("woff2"),
-       url("https://fonts.shopifycdn.com/work_sans/worksans_n6.399ae4c4dd52d38e3f3214ec0cc9c61a0a67ea08.woff?&hmac=ebdf8d0afbf016c0cb63aabafdeba42ff5e68c03b63d5ca77de58c7a23ece904") format("woff");
-}
-
-@font-face {
-  font-family: "Work Sans";
-  font-weight: 600;
-  font-style: normal;
-  src: url("https://fonts.shopifycdn.com/work_sans/worksans_n6.136d99375282ffb6ea8c3dc4a8fe189c7be691b2.woff2?&hmac=7867d42165701e7ee4f032630a1e63ce3ad64eccd01272ef324bd131e1ac1e1a") format("woff2"),
-       url("https://fonts.shopifycdn.com/work_sans/worksans_n6.399ae4c4dd52d38e3f3214ec0cc9c61a0a67ea08.woff?&hmac=ebdf8d0afbf016c0cb63aabafdeba42ff5e68c03b63d5ca77de58c7a23ece904") format("woff");
-}
-
-
-
-
-@font-face {
-  font-family: "Work Sans";
+  font-family: Rajdhani;
   font-weight: 700;
   font-style: normal;
-  src: url("https://fonts.shopifycdn.com/work_sans/worksans_n7.35eac55373d3da50c529c81066eb2f2f0fbedb82.woff2?&hmac=106ad2c6803d02bccb3ab6d82dad0056f5b7e17530be1fc4ed62ccb4e5b47ada") format("woff2"),
-       url("https://fonts.shopifycdn.com/work_sans/worksans_n7.1b010d40a44f517d5363112c4aff386332758bc9.woff?&hmac=a1d22b52337edde0eb1804e12b142c530b09ee4773c1f72c6bbb7a05b1ac7d07") format("woff");
+  src: url("https://fonts.shopifycdn.com/rajdhani/rajdhani_n7.f6e03eacadd4bbe38110a25ef05200437ee83087.woff2?&hmac=e9ea63170cd74a40f1fc2050a80e2d0dead92b7784e1e689e65c790cabbd8d3a") format("woff2"),
+       url("https://fonts.shopifycdn.com/rajdhani/rajdhani_n7.a054bdc0b1ce90a35d9ddd33a5641d9669d16d89.woff?&hmac=9181972bb36720c23a79209c3ec8efde7c92c0e7f8df0fa55d7dddaab79e7759") format("woff");
 }
 
 @font-face {
-  font-family: "Work Sans";
-  font-weight: 900;
+  font-family: Arimo;
+  font-weight: 400;
   font-style: normal;
-  src: url("https://fonts.shopifycdn.com/work_sans/worksans_n9.ab6506808f497e756615d6ab9f5071dbabe19a1a.woff2?&hmac=66f07ff93476640eaa2a24e4bca35f9daaa1652be660364e543df95bc69d48fc") format("woff2"),
-       url("https://fonts.shopifycdn.com/work_sans/worksans_n9.76bd05fd4b9ba57e224ed48abd66adbba7bc3370.woff?&hmac=00ce2b6a77b5348985078637a6aa65bebdddfa90b53f588c99423e7c36b6c037") format("woff");
+  src: url("https://fonts.shopifycdn.com/arimo/arimo_n4.37b74ffdd8f32b386933afc2f690ab2b837c67d4.woff2?&hmac=888e572334b1b6c5989809b5e3334159cd82269eaebe01ee3ef7a0735d8b73c4") format("woff2"),
+       url("https://fonts.shopifycdn.com/arimo/arimo_n4.3b91be2b1578df1fd5917078b7d92a21cb34d88e.woff?&hmac=1b1f7066ab6872196e1f856bdc66ae6279a46a664cab04a6952dadbedb131d98") format("woff");
 }
 
 
+
+
+@font-face {
+  font-family: Arimo;
+  font-weight: 700;
+  font-style: normal;
+  src: url("https://fonts.shopifycdn.com/arimo/arimo_n7.bf3fa65912c7598edac87f3464dc56cced61307e.woff2?&hmac=a24236a3efc424c4debe5467be08a91d6d53a8239597e5ac06bda8e38fadd724") format("woff2"),
+       url("https://fonts.shopifycdn.com/arimo/arimo_n7.1de27ffea9bb2528cf1df7ad7c3c04a2b278cd8d.woff?&hmac=49281f5c0e5f1a1deebbc10dcdd72ec01f677ee22a278e3a96e5cae8ab07555a") format("woff");
+}
+
+@font-face {
+  font-family: Arimo;
+  font-weight: 700;
+  font-style: normal;
+  src: url("https://fonts.shopifycdn.com/arimo/arimo_n7.bf3fa65912c7598edac87f3464dc56cced61307e.woff2?&hmac=a24236a3efc424c4debe5467be08a91d6d53a8239597e5ac06bda8e38fadd724") format("woff2"),
+       url("https://fonts.shopifycdn.com/arimo/arimo_n7.1de27ffea9bb2528cf1df7ad7c3c04a2b278cd8d.woff?&hmac=49281f5c0e5f1a1deebbc10dcdd72ec01f677ee22a278e3a96e5cae8ab07555a") format("woff");
+}
+
+@font-face {
+  font-family: Arimo;
+  font-weight: 400;
+  font-style: italic;
+  src: url("https://fonts.shopifycdn.com/arimo/arimo_i4.9739ae4f9473f2a63d3554a38a434d5ce842d444.woff2?&hmac=6478293bef774e68b5391a09f531897176eec07150cd356b0b55ba020cf95d0d") format("woff2"),
+       url("https://fonts.shopifycdn.com/arimo/arimo_i4.d350b23df4855a383320ead1b9422fa48bb3a6b9.woff?&hmac=66769c3de0fea19baa00cc0bcc03ff634f76d97683778f7a6c7c1ac88fe2db83") format("woff");
+}
+
+@font-face {
+  font-family: Arimo;
+  font-weight: 700;
+  font-style: italic;
+  src: url("https://fonts.shopifycdn.com/arimo/arimo_i7.f62cd88331ad0c31a41f31618f8ff95cca052800.woff2?&hmac=d4ebf578a9273a65cd07b11a2bebcd93487191b4779f72f35baa9cdf98f7bac9") format("woff2"),
+       url("https://fonts.shopifycdn.com/arimo/arimo_i7.6ead2569d278254c7a14fcf41f3024dc621fc58a.woff?&hmac=0d30c2798f74c9426c28e7464cc4667f40bfb81f785348d62d4d2662c87f1c52") format("woff");
+}
 
 
 $font-weight-body--bold: 700;
-$font-weight-body--bolder: 900;
+$font-weight-body--bolder: 700;
 $font-weight-header--bold: 700;
 
-$font-stack-header: "Work Sans", sans-serif;
+$font-stack-header: Rajdhani, sans-serif;
 $font-style-header: normal;
-$font-weight-header: 600;
+$font-weight-header: 700;
 
-$font-stack-body: "Work Sans", sans-serif;
+$font-stack-body: Arimo, sans-serif;
 $font-style-body: normal;
-$font-weight-body: 600;
+$font-weight-body: 400;
 
-$font-size-header: 26 * 1px;
+$font-size-header: 14 * 1px;
 $font-bold-titles: 700;
 
-$font-size-base: 16px;
+$font-size-base: 12px;
 
 $font-stack-cart-notification: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 

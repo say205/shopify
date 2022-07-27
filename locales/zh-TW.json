@@ -2,14 +2,16 @@
   "general": {
     "accessibility": {
       "skip_to_content": "跳到內容",
-      "close_modal": "關閉 (esc)",
+      "close_modal": "關閉",
       "link_messages": {
         "new_window": "在新視窗中開啟。",
         "external": "開啟外部網站。",
         "new_window_and_external": "在新視窗中開啟外部網站。"
       },
-      "refresh_page": "選取項目會重新整理整個頁面",
-      "selection_help": "先按空白鍵，然後按方向鍵選擇"
+      "refresh_page": "選擇項目後，整個頁面將重新整理。",
+      "selection_help": "若要進行選擇，請先按下空白鍵，再按下方向鍵。",
+      "unit_price_separator": "每",
+      "error": "錯誤"
     },
     "meta": {
       "tags": "已套用「{{ tags }}」標籤",
@@ -33,7 +35,7 @@
       "login_form_submit": "進入",
       "signup_form_email_label": "電子郵件",
       "signup_form_success": "我們會在即將開張前寄電子郵件通知您！",
-      "admin_link_html": "您是店主嗎？<a href=\"\/admin\" class=\"text-link\">請在此登入<\/a>",
+      "admin_link_html": "您是店主嗎？<a href=\"/admin\" class=\"text-link\">請在此登入</a>",
       "password_link": "以密碼進入",
       "powered_by_shopify_html": "本商店由 {{ shopify }} 提供技術支援"
     },
@@ -48,7 +50,7 @@
       }
     },
     "search": {
-      "no_results_html": "請嘗試使用其他搜尋詞彙或返回<a href=\"\/\">首頁<\/a>。",
+      "no_results_html": "請嘗試使用其他搜尋詞彙或返回<a href=\"{{ link }}\">首頁</a>。",
       "empty_search_message": "搜尋欄位不可為空白",
       "results_with_count": {
         "one": "「 {{ terms }} 」的 {{ count }} 筆搜尋項結果",
@@ -87,7 +89,7 @@
       "pause_slideshow": "暫停播放投影片",
       "rotate_slideshow": "播放投影片",
       "load_slide": "載入第 {{ slide_number }} 張投影片",
-      "navigation_instructions": "使用向左\/向右箭頭操作播放投影片。如使用行動裝置，請向左\/向右滑動"
+      "navigation_instructions": "使用向左/向右箭頭操作播放投影片。如使用行動裝置，請向左/向右滑動"
     },
     "featured_product": {
       "title": "精選產品",
@@ -96,15 +98,15 @@
     "map": {
       "address_error": "尋找此地址時發生錯誤",
       "address_no_results": "此地址無結果",
-      "address_query_limit_html": "您已超出 Google API 使用量限制。請考慮升級為<a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">付費方案<\/a>。",
-      "auth_error_html": "驗證 Google 地圖帳號時發生問題。",
+      "address_query_limit_html": "您已超出 Google API 使用量限制。請考慮升級為<a href=\"https://developers.google.com/maps/premium/usage-limits\">付費方案</a>。",
+      "auth_error_html": "驗證 Google 地圖帳戶時發生問題。",
       "section_heading": "地點"
     },
     "video": {
-      "play": "撥放影片",
-      "pause": "暫停影片",
-      "resume": "繼續播放影片",
-      "close": "關閉影片"
+      "play": "播放 {{ video_title }} 影片",
+      "pause": "暫停播放 {{ video_title }} 影片",
+      "resume": "繼續播放 {{ video_title }} 影片",
+      "close": "關閉 {{ video_title }} 影片"
     }
   },
   "blogs": {
@@ -139,26 +141,43 @@
     "general": {
       "title": "您的購物車",
       "note": "新增備註到您的訂單",
+      "removed_item_html": "已將 <span class=\"cart__removed-product-details\">({{ quantity }}) {{ link }}</span> 從您的購物車移除。",
       "remove": "移除",
       "subtotal": "小計",
       "savings": "您將省下",
       "taxes_and_shipping_at_checkout": "結帳時計算稅金和運費",
-      "taxes_and_shipping_policy_at_checkout_html": "結帳時計算稅金和<a href=\"{{ link }}\">運費<\/a>",
+      "taxes_and_shipping_policy_at_checkout_html": "結帳時計算稅金和<a href=\"{{ link }}\">運費</a>",
       "taxes_included_but_shipping_at_checkout": "內含稅金，結帳時計算運費",
-      "taxes_included_and_shipping_policy_html": "內含稅金。結帳時計算<a href=\"{{ link }}\">運費<\/a>。",
+      "taxes_included_and_shipping_policy_html": "內含稅金。結帳時計算<a href=\"{{ link }}\">運費</a>。",
       "update": "更新",
       "checkout": "結帳",
       "empty": "您的購物車目前沒有商品。",
       "cookies_required": "啟用 Cookie 功能即可使用購物車",
-      "edit": "編輯",
-      "cancel": "取消",
-      "continue_shopping": "繼續購物"
+      "continue_shopping": "繼續購物",
+      "cart_error": "更新購物車時發生錯誤。請再試一次。"
     },
     "label": {
+      "discounted_total": "折扣後總金額",
       "product": "產品",
       "price": "價格",
+      "price_column": "如需折扣詳細資訊，請參見「價格」欄。",
+      "product_details": "商品詳細資訊",
       "quantity": "數量",
-      "total": "總計"
+      "qty": "數量",
+      "regular_total": "定價總金額",
+      "remove": "移除 {{ product }}",
+      "total": "總計",
+      "update": "更新"
+    },
+    "popup": {
+      "added_to_cart": "剛剛加入您的購物車",
+      "cart_count": {
+        "one": "{{ count }} 件商品",
+        "other": "{{ count }} 件商品"
+      },
+      "product_details": "商品詳細資訊",
+      "quantity": "數量",
+      "quantity_label": "數量：{{ quantity_count }}"
     }
   },
   "collections": {
@@ -171,6 +190,9 @@
         "other": "{{ count }} 項產品"
       },
       "collection_label": "商品系列"
+    },
+    "catalog": {
+      "title": "目錄"
     },
     "sorting": {
       "title": "排序方式"
@@ -193,17 +215,17 @@
   },
   "customer": {
     "account": {
-      "title": "我的帳號",
-      "details": "帳號詳細資訊",
+      "title": "我的帳戶",
+      "details": "帳戶詳細資訊",
       "view_addresses": "檢視地址",
-      "return": "返回帳號詳細資訊"
+      "return": "返回帳戶詳細資訊"
     },
     "activate_account": {
-      "title": "啟用帳號",
-      "subtext": "建立密碼以啟用帳號。",
+      "title": "啟用帳戶",
+      "subtext": "建立密碼以啟用帳戶。",
       "password": "密碼",
       "password_confirm": "確認密碼",
-      "submit": "啟用帳號",
+      "submit": "啟用帳戶",
       "cancel": "拒絕邀請"
     },
     "addresses": {
@@ -217,7 +239,7 @@
       "address1": "地址",
       "address2": "公寓、套房等",
       "city": "市",
-      "country": "國家\/地區",
+      "country": "國家/地區",
       "province": "省",
       "zip": "郵遞區號",
       "phone": "電話",
@@ -239,7 +261,7 @@
       "guest_continue": "繼續"
     },
     "orders": {
-      "title": "訂單歷史記錄",
+      "title": "訂單紀錄",
       "order_number": "訂單",
       "order_number_link": "訂單編號 {{ number }}",
       "date": "日期",
@@ -278,14 +300,14 @@
       "success": "我們已寄一封電子郵件給您，內有連結，可讓您更新密碼。"
     },
     "reset_password": {
-      "title": "重設帳號密碼",
+      "title": "重設帳戶密碼",
       "subtext": "輸入 {{ email }} 的新密碼",
       "password": "密碼",
       "password_confirm": "確認密碼",
       "submit": "重設密碼"
     },
     "register": {
-      "title": "建立帳號",
+      "title": "建立帳戶",
       "first_name": "名字",
       "last_name": "姓氏",
       "email": "電子郵件",
@@ -294,12 +316,15 @@
     }
   },
   "homepage": {
+    "general": {
+      "title": "首頁"
+    },
     "onboarding": {
       "product_title": "產品名稱",
-      "product_description": "此區域可供您說明產品的詳細資訊。向客戶說明產品的外觀、風格與樣式。新增顏色、用料、尺寸、以及產地等詳細資訊。",
+      "product_description": "此區域可供您說明產品的詳細資訊。向顧客說明產品的外觀、風格與樣式。新增顏色、用料、尺寸、以及產地等詳細資訊。",
       "collection_title": "您的商品系列名稱",
       "blog_title": "您的貼文標題",
-      "blog_excerpt": "您的商店尚未發佈任何部落格貼文。您可以用部落格談談上市的新產品、秘訣或其他想和客戶分享的消息。您可以查看 Shopify 的電子商務部落格，從中獲取靈感和建議，建設您自己的商店和部落格。",
+      "blog_excerpt": "您的商店尚未發佈任何部落格貼文。您可以用部落格談談上市的新產品、秘訣或其他想和顧客分享的消息。您可以查看 Shopify 的電子商務部落格，從中獲取靈感和建議，建設您自己的商店和部落格。",
       "blog_author": "作者名稱",
       "no_content": "此區段目前並無內容。請用側邊欄在此區段新增內容。"
     }
@@ -319,10 +344,10 @@
       }
     },
     "customer": {
-      "account": "帳號",
+      "account": "帳戶",
       "log_out": "登出",
       "log_in": "登入",
-      "create_account": "建立帳號"
+      "create_account": "建立帳戶"
     },
     "footer": {
       "social_platform": "{{ name }} 於 {{ platform }}"
@@ -337,11 +362,15 @@
       "sale_price": "售價",
       "quantity": "數量",
       "add_to_cart": "加入購物車",
+      "loader_label": "正在將產品加入您的購物車",
       "back_to_collection": "返回 {{ title }}",
       "vendor": "廠商",
       "quantity_minimum_message": "數量必須大於或等於1",
       "include_taxes": "內含稅金。",
-      "shipping_policy_html": "結帳時計算<a href=\"{{ link }}\">運費<\/a>。"
+      "shipping_policy_html": "結帳時計算<a href=\"{{ link }}\">運費</a>。",
+      "unit_price_label": "單價",
+      "view_cart": "檢視購物車",
+      "availability": "供貨情況"
     }
   },
   "gift_cards": {
@@ -359,8 +388,5 @@
       "add_to_apple_wallet": "加入 Apple Wallet",
       "qr_image_alt": "QR 條碼 — 掃描以兌換禮品卡"
     }
-  },
-  "date_formats": {
-    "month_day_year": "%Y年%-m月%-d日"
   }
 }

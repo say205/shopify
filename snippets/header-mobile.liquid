@@ -1,54 +1,63 @@
-<div class="header-mb">          
-    <div class="header-mb-left header-mb-items">
-        <div class="hamburger-icon svg-mb">
-            <a href="#" class="icon-nav" title="Menu Mobile Icon" data-menu-mb-toogle data-dropdown-menu>
-                <span class="icon-line"></span>
+<div class="header-mobile">
+    <div class="header-mobile__item text-left">
+        <div class="item__mobile item__mobile--hamburger">
+            <a class="mobileMenu-toggle" href="javascript:void(0)" data-mobile-menu aria-label="menu">
+                <span class="mobileMenu-toggle__Icon"></span>
             </a>
         </div>
-
-        <div class="search-mb svg-mb">       
-            <a class="icon-search" href="javascript:void(0)" data-dropdown-menu data-search-toogle-mobile>
-              {% render 'icon-search' %}
-              {% render 'icon-close' %}
+        {% if section.settings.enable-header-search %}
+        <div class="item__mobile item__mobile--searchMobile">
+            <a class="navUser-action" href="javascript:void(0)" data-mobile-search aria-label="search">
+                <svg class="icon icon-search"><use xlink:href="#icon-search" /></svg>
+                <svg class="icon icon-close"><use xlink:href="#icon-close" /></svg>
             </a>
-        </div>                        
+        </div>
+        {% endif %}
     </div>
-
-  <div class="header-mb-middle header-mb-items">
-    <h1 class="header-logo">
-      {% if section.settings.brand_type == 'image' and section.settings.logo != bank %}
-      <a class="logo-img" href="{{ routes.cart_url | split: 'cart' | first }}" title="Logo">
-        <img data-src="{{ section.settings.logo | img_url: 'master' }}"
-             src="{{ section.settings.logo | img_url: 'master' }}"
-             alt="{{ section.settings.logo.alt | default: shop.name }}" itemprop="logo" class="lazyautosizes lazyloade" data-sizes="auto">
-      </a>
-      {% elsif section.settings.brand_text != '' %}
-      <a class="logo-title" href="{{ routes.cart_url | split: 'cart' | first }}">
-        {{ section.settings.brand_text }}
-      </a>
-      {% else %}
-      <a class="logo-title" href="{{ routes.cart_url | split: 'cart' | first }}">
-        {{ shop.name }}
-      </a>
-      {% endif %}
-    </h1>
-  </div>
-
-  <div class="header-mb-right header-mb-items">
-    <div class="acc-mb svg-mb">
-      <a href="#" title="User Icon" class="icon-user" data-user-mobile-toggle data-dropdown-menu>
-        {% render 'icon-user' %}
-      </a>
+    <div class="header-mobile__item text-center">
+        <div class="item__mobile item__mobile--logo">
+        </div>
     </div>
-
-    <div class="cart-icon svg-mb">
-      <a href="#" title="Cart Icon" data-cart-toggle data-dropdown-menu>       
-        {% render 'icon-cart' %}
-
-        <span class="cartCount" data-cart-count>
-          {{ cart.item_count }}
-        </span>
-      </a>
+    <div class="header-mobile__item text-right">
+        {% if shop.customer_accounts_enabled and section.settings.enable-header-account %}
+            <div class="item__mobile item__mobile--account">
+                {% if pagename == 'customers-register' or pagename == 'customers-login' or pagename == 'customers-account' or pagename == 'customers-addresses' or pagename == 'customers-activate_account' or pagename == 'customers-order' or pagename == 'customers-reset_password' %}
+                    {% if customer %}
+                        <a class="navUser-action" href="{{ routes.account_url }}" aria-label="account">
+                            <svg class="icon"><use xlink:href="#icon-user" /></svg>
+                        </a>
+                    {% else %}
+                        <a class="navUser-action" href="{{ routes.account_login_url }}" aria-label="account">
+                            <svg class="icon"><use xlink:href="#icon-user" /></svg>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    {% if customer %}
+                        <a class="navUser-action" href="{{ routes.account_url }}" aria-label="account">
+                            <svg class="icon"><use xlink:href="#icon-user" /></svg>
+                        </a>
+                    {% else %}
+                        <a class="navUser-action" href="{{ routes.account_login_url }}" data-mobile-login aria-label="account">
+                            <svg class="icon"><use xlink:href="#icon-user" /></svg>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if section.settings.enable-header-cart %}
+        <div class="item__mobile item__mobile--cart">
+            {% if pagename == 'cart' %}
+                <a class="navUser-action" href="{{ routes.cart_url }}" aria-label="cart">
+                    <svg class="icon"><use xlink:href="#icon-cart" /></svg>
+                    <span class="countPill cart-quantity" data-cart-count>{{ cart.item_count }}</span>
+                </a>
+            {% else %}
+                <a class="navUser-action" href="javascript:void(0)" data-mobile-cart aria-label="cart">
+                    <svg class="icon"><use xlink:href="#icon-cart" /></svg>
+                    <span class="countPill cart-quantity" data-cart-count>{{ cart.item_count }}</span>
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
-  </div>          
 </div>

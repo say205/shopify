@@ -1,0 +1,52 @@
+{% assign pagename = request.page_type | handle %}
+
+<div class="header-PC">
+    <div class="container">
+        <div class="header-middle">
+            <div class="header-middle__left">
+                <div class="logo-wrapper" itemscope itemtype="http://schema.org/Organization">
+                    <meta itemprop="url" content="{{ shop.url }}">
+                    {% if section.settings.logo != blank %}
+                        {% assign img_url = section.settings.logo | img_url: 'master' %}
+                        <a href="{{ routes.root_url }}" class="site-header__logo-image" aria-label="logo" style="width: {{ section.settings.logo_max_width }}px; max-width: {{ section.settings.logo_max_width }}px">
+                            {% capture logo_alt %}{{ section.settings.logo.alt | default: shop.name }}{% endcapture %}
+                            <img itemprop="logo" src="{{ img_url }}" alt="{{ logo_alt | escape }}">
+                        </a>
+                    {% else %}
+                        <a class="logo_text" href="{{ routes.root_url }}" aria-label="logo" style="width: {{ section.settings.logo_max_width }}px">
+                            {% if section.settings.logo_text != blank %}
+                                {{ section.settings.logo_text }}
+                            {% else %}
+                                {{ shop.name }}
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="header-middle__center header-middle__navigation">
+                {% render 'site-nav', main_menu: section.settings.main_linklist %}
+            </div>
+            <div class="header-middle__right">
+                <div class="header-middle__item header-middle__item--language">
+                    {% render 'header-language' %}
+                </div>
+                <div class="header-middle__item header-middle__item--currency currency-style-2">
+                    {% render 'header-currency' %}
+                </div>
+                {% if shop.customer_accounts_enabled %}
+                    <div class="header-middle__item header-middle__item--account account-style-2">
+                        {% render 'header-account-2', pagename: pagename %}
+                    </div>
+                {% endif %}
+                <div class="header-middle__item header-middle__item--quickSearch">
+                    <a class="navUser-action" href="javascript:void(0)" aria-label="link" data-search-pc>
+                        <svg class="icon icon-search-2"><use xlink:href="#icon-search-2" /></svg>
+                    </a>
+                </div>
+                <div class="header-middle__item header-middle__item--cart">
+                    {% render 'header-cart', pagename: pagename %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

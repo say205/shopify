@@ -25,6 +25,6 @@
 {
     "results": [{{ results }}],
     "results_count": {{ search.results_count }},
-    "results_label": {% if search.results_count == 0 %}{{ 'general.search.no_results' | t | json }}{% else %}{{ 'general.search.view_results'| t | json }}{% endif %},
-    "url": "{{ routes.cart_url | split: '/cart' | first }}/search?q={{ search.terms }}"
+    "results_label": {% if search.results_count == 0 %}{{ 'general.search.empty_search_message' | t | json }}{% else %}{{ 'general.search.heading.other'| t | json }}{% endif %},
+    "url": "/search?q={{ search.terms }}"
 }

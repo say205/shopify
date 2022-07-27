@@ -1,14 +1,13 @@
-<div class="collection-template collection">
-  {% section 'collection-header' %}
-  <div class="container">  
-    <div class="halo-collection-content">
-      <div class="row">
-        {% section 'sidebar-filter' %}
-        {% section 'collection-template' %}
-      </div>
-      {% section 'recently-viewed-products' %}
-      {% section 'collection-text-block' %}
-      {% render 'breadcrumb' %}      
-    </div>   
-  </div>
-</div>
+{% comment %}
+    The contents of the collection.liquid template can be found in /sections/collection-template.liquid
+{% endcomment %}
+
+{% section 'collection-hero' %}
+
+{% section 'collection-template' %}
+
+{% section 'list-collections-products-2' %}
+
+{% if settings.breadcrumb_layout == 'bottom' %}
+    {% render 'breadcrumb' %}
+{% endif %}

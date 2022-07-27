@@ -1,156 +1,322 @@
-{% if cart.attributes.pagination != blank and cart.attributes.pagination %}
-{% assign product_per_page = cart.attributes.pagination %}
-{% else %}
-{% assign product_per_page = section.settings.collection_results_per_page %}
+{% assign column = column | default: section.settings.column %}
+{% assign limit = limit | default: section.settings.limit %}
+
+{% if settings.breadcrumb_layout == 'top' %}
+    {% render 'breadcrumb' %}
 {% endif %}
 
-{% paginate collection.products by product_per_page %}
- 
-{% case section.settings.collection_results_per_row %}
-{% when '1' %}
-    {%- assign grid_item_width = 'col-12' -%}
-  {%- assign rows = 'products-list' -%}
+{% if current_tags == blank %}
+    {% assign has_refined = false %}
+{% else %}
+    {% assign has_refined = true %} 
+{% endif %}
 
-  {% when '2' %}
-    {%- assign grid_item_width = 'col-6' -%}
-  {%- assign rows = 'products-grid' -%}
+{% paginate collection.products by limit %}
 
-  {% when '3' %}
-    {%- assign grid_item_width = 'col-6 col-md-4' -%}
-  {%- assign rows = 'products-grid' -%}
-
-  {% when '4' %}
-    {%- assign grid_item_width = 'col-6 col-md-4 col-lg-3' -%}
-  {%- assign rows = 'products-grid' -%}
-
-  {% when '5' %}
-    {%- assign grid_item_width = 'col-6 col-md-4 col-lg-3 col5' -%}
-  {%- assign rows = 'products-grid' -%}
-{% endcase %}
-
-<div data-section-id="{{ section.id }}" data-section-type="collection-template">
-  {% render 'toolbar' %}
-  
-  <div class="product-collection {{ rows }} row column-{{ section.settings.collection_results_per_row }}">
-    {% if collection.products_count > 0 %}  
-    {% for product in collection.products %}
-    <div class="grid-item {{ grid_item_width }} {% if settings.product_image_border%}grid-item-border {% endif %}">   
-      {% render 'product-grid-item-2' with product as product %}
+<div id="page-collection" class="page page-collection" data-section-id="{{ section.id }}" data-section-type="collection-template">
+    <div id="page-collection__sidebar" class="page-collection__sidebar page-sidebar">
+        <div class="page-sidebar__close">
+            <a href="javascript:void(0)" class="close">
+                <span class="icon">&#215;</span>
+                <span class="text">{{ 'general.accessibility.close_modal' | t }}</span>
+            </a>
+        </div>
+        <div class="page-sidebar__content">
+        </div>
     </div>
-    {% endfor %}
-    {% else %}
-    <p class="col-12 text-center" {% if settings.enable_multilang %}data-translate="collections.general.no_matches"{% endif %}>
-      {{ 'collections.general.no_matches' | t }}
-    </p>
-    {% endif %}
-  </div>
-
-  <div class="product-pagination{% if settings.collection_infinite_scrolling %} infinite-scroll{% endif %}{% if paginate.pages > 1 %} has-pagination{% else %} no-pagination{% endif %}">
-    {% if paginate.pages > 1 %}
-    <div class="padding">
-      {% render 'pagination-page' paginate: paginate %}
+    <div class="container">
+        <div class="section-header text-center">
+            <h1 class="title">
+                {{ collection.title | upcase }}
+            </h1>
+            {% if collection.description != blank %}
+                <p>{{ collection.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Filter and short -->
+    {% if section.settings.enable_filter or section.settings.enable_sort %}
+    <div class="collection-sort-filter">
+        <div class="container">
+            {% if section.settings.enable_filter %}
+                <div id="collection-filter" class="collection-filter__item text-left">
+                    <div id="filters-toolbar" class="filters-toolbar__item-child" data-url="{{ collection.url }}">
+                        <label class="filters-toolbar__label select-label" for="SortBy">
+                            <svg class="icon"><use xlink:href="#icon-filter" /></svg>
+                            <span class="text">{{ 'collections.filters.title_tags' | t }}</span>
+                        </label>
+                        <div>
+                            <div class="filters-toolbar__refined" {% if has_refined == false %} style="display:none"{% endif %}>
+                                <div class="filters-toolbar__refined-title">
+                                    <h3 class="title">{{ 'collections.filters.refined_by' | t }}</h3>
+                                    <a href="javascript:void(0)" class="clear clear-all" {% if has_refined == false %}style="display:none"{% endif %}>
+                                        {{ 'collections.filters.clear_all' | t }}
+                                    </a>
+                                </div>
+                                <div class="filters-toolbar__refined-content">
+                                    <ul class="refined">    
+                                        {% for t in current_tags %}
+                                            {% assign tag = t | strip %}
+                                            {% assign tag_value = tag | handleize %}
+                                            <li>
+                                                <input type="checkbox" value="{{ tag_value }}" {% if current_tags contains tag %}checked{% endif %}/>
+                                                <a href="javascript:void(0)" class="selected-tag">{{ tag}}&nbsp; <span>&#215;</span></a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            {% for block in section.blocks %}
+                                {% if block.type == 'filter_text' %}
+                                    <div class="filters-toolbar__input-wrapper select-group" data-select="Filter">
+                                        <div class="filters-toolbar__input-title">
+                                            <h3 class="title">{{ block.settings.title }}</h3>
+                                            <svg class="icon"><use xlink:href="#icon-chevron-down" /></svg>
+                                        </div>
+                                        <div class="filters-toolbar__input-content">
+                                            <div class="filters-toolbar__input-list text">
+                                                {% assign tags = block.settings.list_tags | split: ',' %}
+                                                {% assign collection_tags = collection.all_tags %}
+                                                {% if current_tags != blank %}
+                                                    {% assign collection_tags = collection.tags %}
+                                                {% endif %}
+                                                {% for t in tags %}
+                                                    {% assign tag = t | strip %}
+                                                    {% assign tag_value = tag | handleize %}
+                                                    {% assign current_tags_value = current_tags | handleize %}
+                                                    {% if collection_tags contains tag %}
+                                                        <div data-filter data-value="{{ tag_value }}"{% if current_tags contains tag %} class="active"{% endif %}>{{ tag }}</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if block.type == 'filter_color' %}
+                                    <div class="filters-toolbar__input-wrapper select-group" data-select="Filter">
+                                        <div class="filters-toolbar__input-title">
+                                            <h3 class="title">{{ block.settings.title }}</h3>
+                                            <svg class="icon"><use xlink:href="#icon-chevron-down" /></svg>
+                                        </div>
+                                        <div class="filters-toolbar__input-content">
+                                            <div class="filters-toolbar__input-list color">
+                                                {% assign tags = block.settings.list_tags | split: ',' %}
+                                                {% assign collection_tags = collection.all_tags %}
+                                                {% if current_tags != blank %}
+                                                    {% assign collection_tags = collection.tags %}
+                                                {% endif %}
+                                                {% for t in tags %}
+                                                    {% assign tag = t | strip %}
+                                                    {% assign tag_value = tag | handleize %}
+                                                    {% assign current_tags_value = current_tags | handleize %}
+                                                    {% if collection_tags contains tag %}
+                                                        <div data-filter data-value="{{ tag_value }}"{% if current_tags contains tag %} class="active"{% endif %} style="background-color: {{ tag_value }}; background-image: url({{ tag_value | handle | append: '.png' | file_url }})">{{ tag }}</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if section.settings.enable_sort %}
+                <div class="collection-filter__item text-right">
+                    <div class="filters-toolbar__item-child">
+                        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                        <label class="filters-toolbar__label select-label" for="SortBy">
+                            <svg class="icon"><use xlink:href="#icon-sort" /></svg>
+                            <span class="text">{{ 'collections.sorting.title' | t }}</span>
+                        </label>
+                        <div class="filters-toolbar__input-wrapper select-group text-left" data-select="SortBy">
+                            <div class="filters-toolbar__input-title">
+                                <h3 class="title"></h3>
+                                <svg class="icon"><use xlink:href="#icon-chevron-down" /></svg>
+                            </div>
+                            <div class="filters-toolbar__input-content">
+                                <div class="filters-toolbar__input-list text">
+                                    {% for option in collection.sort_options %}
+                                        <div data-sortby data-value="{{ option.value }}"{% if option.value == sort_by %} class="active"{% endif %}>{{ option.name }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- sidebar mobile icon -->
+            <div class="sidebar_mobile_wrapper">
+                <div class="sidebar_mobile">
+                    <span class='text'>{{ 'general.sidebar.title' | t }}:</span>
+                    <svg class="icon"><use xlink:href="#icon-sidebar" /></svg>
+                </div>
+            </div>
+            <!-- end sidebar mobile icon -->
+        </div>
     </div>
     {% endif %}
-
-    {% if settings.enable_compare_product %}
-      <div class="compare-link">
-        <a href="javascript:void(0)" data-compare-selected>
-          <span class="compare-text" {% if settings.enable_multilang %}data-translate="collections.general.compare_selected"{% endif %}>{{ 'collections.general.compare_selected' | t }}</span>
-          <span class="countPill countPill--positive countPill--alt" data-compare-count></span>
-        </a>
-      </div>
-    {% endif %}
-  </div>
+    <!-- End Filter and Short -->
+    <div class="container">
+        <div id="collection" class="halo-column column-{{ column }}" {% if section.settings.pagination_type == 'infinite_scroll' %}data-collection="infiniteScroll"{% endif %}>
+            {% for product in collection.products %}
+                <div class="halo-column__item">
+                    {% render 'product-card-grid', product: product, serial: forloop.index, compare: settings.enable_compare_product %}
+                </div>
+            {% else %}
+                {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+                    {% for i in (1..limit) %}
+                        <div class="halo-row__item">
+                            <div class="product-card">
+                                <div class="product-card__image">
+                                    <a class="product-card__link" href="#">
+                                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                        {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                    </a>
+                                </div>
+                                <div class="product-card__content">
+                                    <h4 class="product-card__title">{{ 'homepage.onboarding.product_title' | t }}</h4>
+                                    {% render 'product-price', variant: nil %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {%- assign is_empty_collection = true -%}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!-- Pagination -->
+        <div id="product-collection--infini">
+            {% if section.settings.pagination_type == 'infinite_scroll' %}
+                {% if paginate.next.is_link %}
+                <div class="infinite-scrolling mt-5 text-center">
+                  <a class="btn btn--primary btn--large" href="{{ paginate.next.url }}">
+                    show more
+                  </a>
+                </div>
+                {% endif %}
+            {% else %}
+                {% if paginate.pages > 1 %}
+                    {% render 'pagination-2', paginate: paginate %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <!-- End Pagination -->
+    </div>
 </div>
-{% endpaginate %}   
+
+{% if settings.enable_compare_product %}
+    <div class="compare-link">
+        <a class="btn btn--primary btn--compare" href="javascript:void(0)" data-toggle="modal" data-target="#compare" data-compare-selected>
+            <span class="compare-text">{{ 'general.compare.title' | t }}</span> (<span class="compare-countPill" data-compare-count></span>)
+        </a>
+    </div>
+    {% render 'compare-products-popup' %}
+{% endif %}
+
+{% endpaginate %}
+
 
 {% schema %}
-  {
-    "name": "Collection",
-    "class": "col-12 col-xs-9 col-main",
+{
+    "name": "Collection Content",
     "settings": [
-      {
-        "type": "header",
-        "content": "Collection Content"
-      },
-      {
-        "type": "checkbox",
-        "id": "check_view_as",
-        "label": "Enable View As",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "limited_view",
-        "label": "Enable Limited View",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "sort_enable",
-        "label": "Enable sorting",
-        "default": true
-      },
-      {
-        "type": "select",
-        "id": "collection_results_per_row",
-        "label": "Products per row (grid only)",
-        "default": "4",
-        "options": [
-          {
-            "value": "1",
-            "label": "List"
-          },
-          {
-            "value": "2",
-            "label": "2"
-          },
-          {
-            "value": "3",
-            "label": "3"
-          },
-          {
-            "value": "4",
-            "label": "4"
-          },
-          {
-            "value": "5",
-            "label": "5"
-          }
-        ]
-      },
-      {
-        "type": "select",
-        "id": "collection_results_per_page",
-        "label": "Number of products per page",
-        "default": "16",
-        "options": [
-          {
-            "value": "12",
-            "label": "12"
-          },
-          {
-            "value": "16",
-            "label": "16"
-          },
-          {
-            "value": "20",
-            "label": "20"
-          },
-          {
-            "value": "24",
-            "label": "24"
-          },
-          {
-            "value": "30",
-            "label": "30"
-          },
-          {
-            "value": "50",
-            "label": "50"
-          }
-        ]
-      }
+        {
+            "type": "header",
+            "content": "Layout"
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Column",
+            "default": 4,
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "limit",
+            "label": "Limits product per page",
+            "default": 12,
+            "min": 4,
+            "max": 48,
+            "step": 4
+        },
+        {
+            "type": "header",
+            "content": "Filter & Sorting"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_filter",
+            "label": "Enable filter",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_sort",
+            "label": "Enable sorting",
+            "default": true
+        },
+        {
+            "type": "header",
+            "content": "Pagination"
+        },
+        {
+            "type": "radio",
+            "id": "pagination_type",
+            "label": "Select Pagination to show",
+            "default": "pagination",
+            "options": [
+                {
+                    "value": "pagination",
+                    "label": "Pagination"
+                },
+                {
+                    "value": "infinite_scroll",
+                    "label": "Show more"
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "filter_text",
+            "name": "Filter Text",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading"
+                },
+                {
+                    "type": "textarea",
+                    "id": "list_tags",
+                    "label": "List Tags",
+                    "info": "Separate by a comma, i.e \"Dincidunteros, Nectellus, Solutmades\"."
+                }
+            ]
+        },
+        {
+            "type": "filter_color",
+            "name": "Filter Color",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading"
+                },
+                {
+                    "type": "textarea",
+                    "id": "list_tags",
+                    "label": "List Tags",
+                    "info": "Separate by a comma, i.e \"Dincidunteros, Nectellus, Solutmades\"."
+                }
+            ]
+        }
     ]
-  }
+}
 {% endschema %}

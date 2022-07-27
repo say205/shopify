@@ -1,8 +1,0 @@
-{% if settings.enable_compare_product %}
-<a class="compare-button" data-icon-compare href="javascript:void(0)" data-compare-product-handle="{{ product.handle }}" data-id="{{ product.id }} title="{{ 'compare.general.add_to_compare' | t }}" {% if settings.enable_multilang %}data-translate="compare.general.add_to_compare" translate-item="title"{% endif %}>
-    {% render 'icon-compare' %}
-    <span class="compare-text text-hover" {% if settings.enable_multilang %}data-translate="compare.general.add_to_compare"{% endif %}>
-        {{ 'compare.general.add_to_compare' | t }}
-    </span>
-</a>
-{% endif %} 

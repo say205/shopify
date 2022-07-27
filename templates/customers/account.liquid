@@ -1,140 +1,67 @@
-{% comment %}
-  This template will be automatically generated for you if the file doesn't exist,
-  but where's the fun in having no control? Define your layout below.
-
-  The 'layout settings.customer_layout' line is inserted at the top of every customer account template.
-  Your theme's settings determine to use the 'default' or 'theme' customer templates.
-  More info:
-    - http://www.tetchi.ca/shopify-theme-from-scratch-part-11/
-
-  Template note:
-    - All IDs on this template are required to make the form(s) submit properly
-
-  For all available customer liquid tags:
-    - http://docs.shopify.com/themes/liquid-variables/customer
-{% endcomment %}
-
-{% layout settings.customer_layout %}
-
-<div class="account-page custom-acc-page">
-  <div class="container">
-    <header class="page-header">
-      <h1 {% if settings.enable_multilang %}data-translate="customer.account.title"{%endif%}>
-        {{ 'customer.account.title1' | t }}
-      </h1>
-    </header>
-    
-    <div class="grid">
-      <div class="grid-item">
-        <h4 class="box-title" {% if settings.enable_multilang %}data-translate="customer.orders.title"{%endif%}>
-          {{ 'customer.orders.title' | t }}
-        </h4>
-
-        {% if customer.orders.size != 0 %}
-        <div style="overflow-x:auto;">
-          <table class="full">
-            <thead>
-              <tr>
-                <th {% if settings.enable_multilang %}data-translate="customer.orders.order_number"{%endif%}>
-                  {{ 'customer.orders.order_number' | t }}
-                </th>
-                <th {% if settings.enable_multilang %}data-translate="customer.orders.date"{%endif%}>
-                  {{ 'customer.orders.date' | t }}
-                </th>
-                <th {% if settings.enable_multilang %}data-translate="customer.orders.payment_status"{%endif%}>
-                  {{ 'customer.orders.payment_status' | t }}
-                </th>
-                <th {% if settings.enable_multilang %}data-translate="customer.orders.fulfillment_status"{%endif%}>
-                  {{ 'customer.orders.fulfillment_status' | t }}
-                </th>
-                <th {% if settings.enable_multilang %}data-translate="customer.orders.total"{%endif%}>
-                  {{ 'customer.orders.total' | t }}
-                </th>
-              </tr>
-            </thead>
-            
-            <tbody>
-              {% for order in customer.orders %}
-              <tr>
-                <td>{{ order.name | link_to: order.customer_url }}</td>
-                <td>{{ order.created_at | date: format: 'month_day_year' }}</td>
-                <td>{{ order.financial_status_label }}</td>
-                <td>{{ order.fulfillment_status_label }}</td>
-                <td>{{ order.total_price | money }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+{% if settings.breadcrumb_layout == 'top' %}
+    {% render 'breadcrumb' %}
+{% endif %}
+<div class="container">
+    <div class="page page-login">
+        <div class="section-header text-center">
+            <h2 class="title">
+                {{ 'customer.account.title' | t }}
+            </h2>
+            {% if customer %}
+                <a class="btn btn--tertiary" id="customer_logout_link" href="/account/logout">{{ 'layout.customer.log_out' | t }}</a>
+            {% endif %}
         </div>
-        {% else %}
-        <p class="note" {% if settings.enable_multilang %}data-translate="customer.orders.none"{%endif%}>
-          {{ 'customer.orders.none' | t }}
-        </p>
-        {% endif %}
-      </div>
-
-      <div class="grid-item">
-        <h4 class="box-title" {% if settings.enable_multilang %}data-translate="customer.account.details"{%endif%}>
-          {{ 'customer.account.details' | t }}
-        </h4>
-
-        <h5 class="acc-name">{{ customer.name }}</h5>
-
-        {% if customer.default_address != nil %}
-        <div class="addr">
-          <span class="cus-addr">
-            {{ customer.default_address.address1 }}
-          </span>
-
-          {% if customer.default_address.address2 != "" %}
-          <span class="cus-addr">
-            {{ customer.default_address.address2 }}
-          </span>
-          {% endif %}
-
-          {% if customer.default_address.city != "" %}
-          <span class="cus-addr">
-            {{ customer.default_address.city }}
-          </span>
-          {% endif %}
-
-          {% if customer.default_address.province_code != "" %}
-          <span class="cus-addr">
-            {{ customer.default_address.province_code | upcase }}
-          </span>
-          {% endif %}
-
-          {% if customer.default_address.zip != "" %}
-          <span class="cus-addr addr-zip">
-            {{ customer.default_address.zip | upcase }}
-          </span>
-          {% endif %}
-
-          {% if customer.default_address.country != "" %}
-          <span class="cus-addr">
-            {{ customer.default_address.country }}
-          </span>
-          {% endif %}
-
-          {% if customer.default_address.phone != "" %}
-          <span class="cus-addr">
-            {{ customer.default_address.phone }}
-          </span>
-          {% endif %}
+        <div class="mb-5">
+            <h3 class="loginTitle loginTitle--border">{{ 'customer.orders.title' | t }}</h3>
+            {% paginate customer.orders by 20 %}
+                {% if customer.orders.size != 0 %}
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">{{ 'customer.orders.order_number' | t }}</th>
+                                <th scope="col">{{ 'customer.orders.date' | t }}</th>
+                                <th scope="col">{{ 'customer.orders.payment_status' | t }}</th>
+                                <th scope="col">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                                <th scope="col">{{ 'customer.orders.total' | t }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in customer.orders %}
+                                <tr>
+                                    <th data-label="{{ 'customer.orders.order_number' | t }}" scope="row">
+                                        <a href="{{ order.customer_url }}" class="btn btn--tertiary" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">{{ order.name }}</a>
+                                    </th>
+                                    <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | time_tag: format: 'date' }}</td>
+                                    <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                                    <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                                    <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="form-message form-message--warning alert alert-warning">
+                        <p>{{ 'customer.orders.none' | t }}</p>
+                    </div>
+                {% endif %}
+                {% if paginate.pages > 1 %}
+                    {% render 'pagination', paginate: paginate %}
+                {% endif %}
+            {% endpaginate %}
         </div>
-        {% endif %}
-
-        <div class="action-btn">
-          <a class="btn btn-padd42" href="/account/addresses">
-            <span {% if settings.enable_multilang %}data-translate="customer.account.view_addresses"{%endif%}>
-              {{ 'customer.account.view_addresses' | t }}
-            </span>
-            <span>
-              ({{ customer.addresses_count }})
-            </span>
-          </a>
+        <div>
+            {% if customer.default_address != blank %}
+                <h3 class="loginTitle loginTitle--border">{{ 'customer.account.details' | t }}</h3>
+                {{ customer.default_address | format_address }}
+            {% else %}
+                <h3 class="loginTitle mb-4">{{ 'customer.account.details' | t }}</h3>
+            {% endif %}
+            <div class="button-group button-group--two">
+                <a href="{{ routes.account_addresses_url }}" class="btn btn--primary btn--big"><span>{{ 'customer.account.view_addresses' | t }}</span> ({{ customer.addresses_count }})</a>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+{% if settings.breadcrumb_layout == 'bottom' %}
+    {% render 'breadcrumb' %}
+{% endif %}

@@ -2,14 +2,16 @@
   "general": {
     "accessibility": {
       "skip_to_content": "Passer au contenu",
-      "close_modal": "Fermer (Échap)",
+      "close_modal": "Fermer",
       "link_messages": {
         "new_window": "S'ouvre dans une nouvelle fenêtre.",
         "external": "Ouvre un site externe.",
         "new_window_and_external": "Ouvre un site externe dans une nouvelle fenêtre."
       },
-      "refresh_page": "le choix d'une sélection entraîne une actualisation complète de la page",
-      "selection_help": "appuyez sur la touche espace puis sur les touches fléchées pour faire une sélection"
+      "refresh_page": "Le choix d'une sélection entraîne l'actualisation d'une page entière.",
+      "selection_help": "Appuyez sur la touche espace puis sur les touches fléchées pour faire une sélection.",
+      "unit_price_separator": "par",
+      "error": "Erreur"
     },
     "meta": {
       "tags": "Balises \"{{ tags }}\"",
@@ -33,7 +35,7 @@
       "login_form_submit": "Entrer",
       "signup_form_email_label": "E-mail",
       "signup_form_success": "Nous vous enverrons un e-mail juste avant l'ouverture !",
-      "admin_link_html": "Vous êtes le propriétaire de la boutique ? <a href=\"\/admin\" class=\"text-link\">Connectez-vous ici<\/a>.",
+      "admin_link_html": "Vous êtes le propriétaire de la boutique ? <a href=\"/admin\" class=\"text-link\">Connectez-vous ici</a>.",
       "password_link": "Entrer avec un mot de passe",
       "powered_by_shopify_html": "Cette boutique sera propulsée par {{ shopify }}"
     },
@@ -48,7 +50,7 @@
       }
     },
     "search": {
-      "no_results_html": "Veuillez essayer un terme de recherche différent ou revenir à la <a href=\"\/\">page d'accueil<\/a>.",
+      "no_results_html": "Veuillez essayer un terme de recherche différent ou revenir à la <a href=\"{{ link }}\">page d'accueil</a>.",
       "empty_search_message": "Le champ de recherche ne peut pas être vide",
       "results_with_count": {
         "one": "{{ count }} résultat pour \"{{ terms }}\"",
@@ -87,7 +89,7 @@
       "pause_slideshow": "Mettre le diaporama en pause",
       "rotate_slideshow": "Lire le diaporama",
       "load_slide": "Charger la diapositive {{ slide_number }}",
-      "navigation_instructions": "Utilisez les flèches gauche\/droite pour naviguer dans le diaporama ou glissez vers la gauche\/droite sur un appareil mobile"
+      "navigation_instructions": "Utilisez les flèches gauche/droite pour naviguer dans le diaporama ou glissez vers la gauche/droite sur un appareil mobile"
     },
     "featured_product": {
       "title": "Produit en vedette",
@@ -96,15 +98,15 @@
     "map": {
       "address_error": "Une erreur s'est produite dans la recherche de cette adresse",
       "address_no_results": "Aucun résultat pour cette adresse",
-      "address_query_limit_html": "Vous avez dépassé la limite d'utilisation de l'API de Google. Pensez à mettre à niveau vers un <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">forfait premium<\/a>.",
+      "address_query_limit_html": "Vous avez dépassé la limite d'utilisation de l'API de Google. Pensez à mettre à niveau vers un <a href=\"https://developers.google.com/maps/premium/usage-limits\">forfait premium</a>.",
       "auth_error_html": "Une erreur s'est produite lors de l'authentification de votre compte Google Maps.",
       "section_heading": "Emplacement"
     },
     "video": {
-      "play": "Lire la vidéo",
-      "pause": "Pause vidéo",
-      "resume": "Reprendre la vidéo",
-      "close": "Fermer la vidéo"
+      "play": "Lire la vidéo {{ video_title }}",
+      "pause": "Suspendre la vidéo {{ video_title }}",
+      "resume": "Reprendre la vidéo {{ video_title }}",
+      "close": "Fermer la vidéo {{ video_title }}"
     }
   },
   "blogs": {
@@ -139,26 +141,43 @@
     "general": {
       "title": "Votre panier",
       "note": "Ajouter une note à votre commande",
-      "remove": "Retirer",
+      "removed_item_html": "<span class=\"cart__removed-product-details\">({{ quantity }}) {{ link }}</span> supprimé(s) de votre panier.",
+      "remove": "Supprimer",
       "subtotal": "Sous-total",
       "savings": "Vous économisez",
       "taxes_and_shipping_at_checkout": "Taxes et frais de port calculés à la caisse",
-      "taxes_and_shipping_policy_at_checkout_html": "Taxes et <a href=\"{{ link }}\">frais de port<\/a> calculés à la caisse",
+      "taxes_and_shipping_policy_at_checkout_html": "Taxes et <a href=\"{{ link }}\">frais de port</a> calculés à la caisse",
       "taxes_included_but_shipping_at_checkout": "Taxes incluses et frais de port calculés à la caisse",
-      "taxes_included_and_shipping_policy_html": "Taxes incluses. <a href=\"{{ link }}\">Frais de port<\/a> calculés à la caisse.",
+      "taxes_included_and_shipping_policy_html": "Taxes incluses. <a href=\"{{ link }}\">Frais de port</a> calculés à la caisse.",
       "update": "Mettre à jour",
       "checkout": "Passer à la caisse",
       "empty": "Votre panier est vide.",
       "cookies_required": "Activer les cookies pour pouvoir utiliser le panier",
-      "edit": "Modifier",
-      "cancel": "Annuler",
-      "continue_shopping": "Poursuivre vos achats"
+      "continue_shopping": "Poursuivre vos achats",
+      "cart_error": "Une erreur est survenue lors de l’actualisation de votre panier. Essayez de nouveau s’il vous plaît."
     },
     "label": {
+      "discounted_total": "Total après réduction",
       "product": "Produit",
       "price": "Prix",
+      "price_column": "Voir les détails de la réduction dans la colonne Prix.",
+      "product_details": "Détails des produits",
       "quantity": "Quantité",
-      "total": "Total"
+      "qty": "Qté",
+      "regular_total": "Total avant réduction",
+      "remove": "Supprimer {{ product }}",
+      "total": "Total",
+      "update": "Mettre à jour"
+    },
+    "popup": {
+      "added_to_cart": "Ajouté au panier à l'instant",
+      "cart_count": {
+        "one": "{{ count }} article",
+        "other": "{{ count }} articles"
+      },
+      "product_details": "Détails des produits",
+      "quantity": "Qté",
+      "quantity_label": "Quantité : {{ quantity_count }}"
     }
   },
   "collections": {
@@ -171,6 +190,9 @@
         "other": "{{ count }} produits"
       },
       "collection_label": "Collection"
+    },
+    "catalog": {
+      "title": "Catalogue"
     },
     "sorting": {
       "title": "Trier par"
@@ -217,7 +239,7 @@
       "address1": "Adresse",
       "address2": "Appt, suite, etc.",
       "city": "Ville",
-      "country": "Pays",
+      "country": "Pays/région",
       "province": "Province",
       "zip": "Code postal",
       "phone": "Téléphone",
@@ -294,6 +316,9 @@
     }
   },
   "homepage": {
+    "general": {
+      "title": "Page d’accueil"
+    },
     "onboarding": {
       "product_title": "Le nom de votre produit",
       "product_description": "Ce champ est utilisé pour décrire les détails de votre produit. Décrivez l'apparence, la présentation et le style de votre produit à vos clients. Ajoutez des détails sur la couleur, les matériaux utilisés, la taille et la provenance.",
@@ -337,11 +362,15 @@
       "sale_price": "Prix réduit",
       "quantity": "Quantité",
       "add_to_cart": "Ajouter au panier",
+      "loader_label": "Ajout d'un produit à votre panier",
       "back_to_collection": "Retour à {{ title }}",
       "vendor": "Distributeur",
       "quantity_minimum_message": "La quantité doit être supérieure ou égale à 1",
       "include_taxes": "Taxes incluses.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Frais d'expédition<\/a> calculés lors du passage à la caisse."
+      "shipping_policy_html": "<a href=\"{{ link }}\">Frais d'expédition</a> calculés lors du passage à la caisse.",
+      "unit_price_label": "Prix unitaire",
+      "view_cart": "Voir le panier",
+      "availability": "Disponibilité"
     }
   },
   "gift_cards": {
@@ -359,8 +388,5 @@
       "add_to_apple_wallet": "Ajouter à Apple Wallet",
       "qr_image_alt": "code QR - scannez pour réclamer votre carte-cadeau"
     }
-  },
-  "date_formats": {
-    "month_day_year": "%-d %b %Y"
   }
 }

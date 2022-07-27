@@ -1,40 +1,59 @@
-{% if settings.product_layout == "default" %}
-  {% render 'product-default' %}
-{% elsif settings.product_layout =="custom" %}
-  {% render 'product-custom' %}
+{% comment %}
+    The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% if settings.product_layout == "layout-2" %} 
+    {% render 'product-layout-2' %}
+{% else %}
+    {% render 'product-layout-1' %}
 {% endif %}
 
-{% if template contains 'product' %}
-<div class="modal fade halo_modal-custom" id="video_product" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a data-dismiss="modal" class="close close-modal" title="{{ 'cart.ajax_cart.close' | t }}" href="javascript:void(0)">
-                    {% render 'icon-close' %}
-                </a>
-            </div>
+<script>
+    // Override default values of shop.strings for each template.
+    // Alternate product templates can change values of
+    // add to cart button, sold out, and unavailable states here.
+    theme.productStrings = {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }}
+    }
+</script>
 
-            <div class="modal-body">
-                <div class="videoWrapper">
-                    {%  if product.description contains 'iframe' %}
-                    {% assign src = product.description | split:'<iframe' | last | split:'</iframe>' | first %}
-                    <iframe {{src}}> </iframe>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% assign current_variant = product.selected_or_first_available_variant %}
 
-{% render 'ask_an_expert' %}
-
-
-<div class="themevale_popup">
-  {% section 'someone-purchased' %}
-  {% section 'cookie_popup' %}
-  {% if settings.display_sticky %} 
-    {% render 'sticky-add-to-cart' %}
-  {% endif %}
-</div>
-
-{% endif %}
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ shop.url | append: product.url | json }},
+    {%- if product.featured_image -%}
+        {%- assign image_size = product.featured_image.width | append: 'x' -%}
+        "image": [
+            {{ product.featured_image.src | img_url: image_size | prepend: "https:" | json }}
+        ],
+    {%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    {%- if current_variant.sku != blank -%}
+        "sku": {{ current_variant.sku | json }},
+    {%- endif -%}
+    "brand": {
+        "@type": "Thing",
+        "name": {{ product.vendor | json }}
+    },
+    "offers": [
+        {%- for variant in product.variants -%}
+            {
+                "@type" : "Offer",
+                {%- if variant.sku != blank -%}
+                    "sku": {{ variant.sku | json }},
+                {%- endif -%}
+                "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+                "price" : {{ variant.price | divided_by: 100.00 | json }},
+                "priceCurrency" : {{ cart.currency.iso_code | json }},
+                "url" : {{ shop.url | append: variant.url | json }}
+            }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+    ]
+}
+</script>

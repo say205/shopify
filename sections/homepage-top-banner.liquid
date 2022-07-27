@@ -1,0 +1,451 @@
+{% if section.settings.display_homepage_top_banner %}
+<section class="home-top-banner" id="section-{{section.id}}">
+  <div class="container">
+    <div class="row products-grid">
+      {% for block in section.blocks %}
+
+      {% assign product_grid = 12 | divided_by: 3 %}
+        
+        {%- assign col1 =  false -%}
+        {%- assign col2 = false  -%}
+        {%- assign col3 = false -%}
+        {%- assign col4 = false -%}
+
+        {% case section.blocks.size %}
+        {% when 1 %}
+             {%- assign col1 =  true -%}
+        {% when 2 %}
+          {%- assign col2 =  true -%}
+        {% when 3 %}
+          {%- assign col3 =  true -%}
+        {% when 4 %}
+          {%- assign col4 =  true -%}
+        {% endcase %}
+
+      {% assign block_size = section.blocks.size %}
+        <div class="banner-image col column column-{{block.id}} col-12 col-md-4 {% if block.settings.ct_img != blank %} has-image{% else %} no-img{% endif %} {% if block.settings.ct_desc != blank %}has-desc{% else %} no-desc{% endif %}">
+          <div class="custom-item" {% if block.settings.ct_img == blank %}style="background: {{ block.settings.ct_backgound_no_image }};"{% endif %}>
+            
+            {% if block.settings.ct_img != blank %}
+              {%- assign img_url = block.settings.ct_img | img_url: '1024x' -%}
+              <a href="{{block.settings.ct_link}}" title="{{block.settings.ct_heading}}" class="animate-scale">
+                <img data-src="https:{{ img_url}}" alt="{{block.settings.ct_heading}}" {% render 'lazy_load' %}>
+              </a>
+              {% if block.settings.ct_heading != blank or  block.settings.ct_desc != blank or block.settings.ct_link_text != blank %}
+                <div class="caption{% if block.settings.banner_image_content_position == 'top' %} position-top{% elsif block.settings.banner_image_content_position == 'bottom' %} position-bottom {% else %} position-middle{% endif %}" style="{% if block.settings.banner_image_content_position == 'top' %} top: 0px; transform: inherit; {% elsif block.settings.banner_image_content_position == 'bottom' %} top: inherit;transform: inherit;bottom: 0!important;{% else %}top: 50%;transform: translateY(-50%);{% endif %}">
+
+                  {% if block.settings.ct_heading != blank %}
+                  <h3 class="heading{% if block.settings.ct_desc == blank and block.settings.ct_link_text == blank%} no-bottom{% endif %}" 
+                  {% if block.settings.ct_img == blank %} style="color: {{ block.settings.ct_color_heading_no_image }};font-size: {{ block.settings.font_size_heading }};"
+                  {% else %}style="color: {{ block.settings.color_heading }};font-size: {{ block.settings.font_size_heading }};"{% endif %}>
+                    {% render 'multilang' with  block.settings.ct_heading %}
+                  </h3>
+                  {% endif %}
+
+                  {% if block.settings.ct_desc != blank %}
+                  <p class="desc-text {% if block.settings.ct_link_text == blank%} no-bottom{% endif %}" 
+                  {% if block.settings.ct_img == blank %} style="color: {{ block.settings.ct_color_desc_no_image }};font-size: {{ block.settings.font_size_desc }};"
+                  {% else %}style="color: {{ block.settings.color_desc }};font-size: {{ block.settings.font_size_desc }};"{% endif %}>
+                    {% render 'multilang' with  block.settings.ct_desc %}
+                  </p>
+                   {% endif %}
+
+                   {% if block.settings.ct_link_text != blank %}
+                    <a href="{{block.settings.ct_link}}" title="">
+                      <h5 class="link_text" 
+                      {% if block.settings.ct_img == blank %} style="color: {{ block.settings.ct_color_link_text_no_image }};border-bottom: 1px solid {{ block.settings.ct_color_link_text_no_image | color_modify: 'alpha', 0.7 }};font-size: {{ block.settings.font_size_link_text }};"
+                      {% else %}style="color: {{ block.settings.color_link_text }}; border-bottom: 1px solid {{ block.settings.color_link_text | color_modify: 'alpha', 0.7 }};font-size: {{ block.settings.font_size_link_text }};"{% endif %}>
+                        {% render 'multilang' with  block.settings.ct_link_text %}
+                      </h5>
+                    </a>
+                  {% endif %}
+                </div>
+                {% endif %}
+              {% else %}
+                {% if block.settings.ct_heading != blank or  block.settings.ct_desc != blank or block.settings.ct_link_text != blank %}
+                  <div class="caption{% if block.settings.banner_image_content_position == 'top' %} position-top{% elsif block.settings.banner_image_content_position == 'bottom' %} position-bottom {% else %} position-middle{% endif %}">
+
+                    {% if block.settings.ct_heading != blank %}
+                    <h3 class="heading{% if block.settings.ct_desc == blank and block.settings.ct_link_text == blank%} no-bottom{% endif %}" 
+                    {% if block.settings.ct_img == blank %} style="color: {{ block.settings.ct_color_heading_no_image }};font-size: {{ block.settings.font_size_heading }};"
+                    {% else %}style="color: {{ block.settings.color_heading }};font-size: {{ block.settings.font_size_heading }};"{% endif %}>
+                      {% render 'multilang' with  block.settings.ct_heading %}
+                    </h3>
+                    {% endif %}
+
+                    {% if block.settings.ct_desc != blank %}
+                    <p class="desc-text {% if block.settings.ct_link_text == blank%} no-bottom{% endif %}" 
+                    {% if block.settings.ct_img == blank %} style="color: {{ block.settings.ct_color_desc_no_image }};font-size: {{ block.settings.font_size_desc }};"
+                    {% else %}style="color: {{ block.settings.color_desc }};font-size: {{ block.settings.font_size_desc }};"{% endif %}>
+                      {% render 'multilang' with  block.settings.ct_desc %}
+                    </p>
+                     {% endif %}
+
+                     {% if block.settings.ct_link_text != blank %}
+                      <a href="{{block.settings.ct_link}}" title="">
+                        <h5 class="link_text" 
+                        {% if block.settings.ct_img == blank %} style="color: {{ block.settings.ct_color_link_text_no_image }};border-bottom: 1px solid {{ block.settings.ct_color_link_text_no_image | color_modify: 'alpha', 0.7 }};font-size: {{ block.settings.font_size_link_text }};"
+                        {% else %}style="color: {{ block.settings.color_link_text }}; border-bottom: 1px solid {{ block.settings.color_link_text | color_modify: 'alpha', 0.7 }};font-size: {{ block.settings.font_size_link_text }};"{% endif %}>
+                          {% render 'multilang' with  block.settings.ct_link_text %}
+                        </h5>
+                      </a>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+              {% endif %}
+            
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<style>
+  #section-{{section.id}}{
+    margin-top: {{ section.settings.space_on }}px;
+    margin-bottom: {{ section.settings.space_below }}px;
+  }
+
+  #section-{{section.id}} .banner-image {
+    height: {{section.settings.banner_image_height_desktop}}px;
+  }
+
+  #section-{{section.id}} .banner-image img {
+    height: {{section.settings.banner_image_height_desktop}}px;
+    object-fit: cover;
+  }
+
+  #section-{{section.id}} .slick-dots {
+    margin-top: {{ section.settings.space_move_up }}px;
+  }
+
+  #section-{{section.id}} .slick-dots li button {
+    background: {{section.settings.ct_dot_color}};
+    border-color: {{section.settings.ct_dot_color}};
+  }
+
+  #section-{{section.id}} .slick-dots li.slick-active button {
+    background: transparent;
+  }
+
+  {% if section.settings.slider_row == '1' %}
+    .home-top-banner .banner-image.slick-slide {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        visibility: visible;
+    }
+  {% else %}
+    .home-top-banner .slick-slide .banner-image {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        visibility: visible;
+    }
+  {% endif %}
+
+  @media (max-width: 991px) {
+    #section-{{section.id}}{
+      margin-bottom: 50px;
+    }
+    #section-1556766796437 .banner-image img {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 380px){
+     #section-{{section.id}} .banner-image {
+      height: {{section.settings.banner_image_height_mobile}}px;
+    }
+
+    #section-{{section.id}} .banner-image img {
+      height: {{section.settings.banner_image_height_mobile}}px;
+    }
+  }
+</style>
+{% endif %}
+<script>
+  $(document).ready(function() {
+  var productGrid = $('.home-top-banner .products-grid');
+  var slide_rows = {{ section.settings.slider_row }};
+  var columnGrid = {{ section.settings.slider_column }};
+
+  if(productGrid.not('.slick-initialized')){
+      productGrid.slick({
+          infinite: false,
+          rows: slide_rows,
+          slidesToShow: columnGrid,
+          slidesToScroll: columnGrid,
+          dots: true,
+          arrows: false,
+          autoplay: false,
+          nextArrow: '<button type="button" class="slick-next"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 20 20"><path d="M5 20c-0.128 0-0.256-0.049-0.354-0.146-0.195-0.195-0.195-0.512 0-0.707l8.646-8.646-8.646-8.646c-0.195-0.195-0.195-0.512 0-0.707s0.512-0.195 0.707 0l9 9c0.195 0.195 0.195 0.512 0 0.707l-9 9c-0.098 0.098-0.226 0.146-0.354 0.146z"></path></svg></button>',
+          prevArrow: '<button type="button" class="slick-prev"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 20 20"><path d="M14 20c0.128 0 0.256-0.049 0.354-0.146 0.195-0.195 0.195-0.512 0-0.707l-8.646-8.646 8.646-8.646c0.195-0.195 0.195-0.512 0-0.707s-0.512-0.195-0.707 0l-9 9c-0.195 0.195-0.195 0.512 0 0.707l9 9c0.098 0.098 0.226 0.146 0.354 0.146z"></path></svg></button>',
+          speed : 1000,
+          responsive: [
+            {
+              breakpoint: 1200,
+              settings: {
+                  rows: slide_rows,
+                  slidesToShow: 3,
+                  slidesToScroll: 3
+
+              }
+            },
+            {
+              breakpoint: 992,
+              settings: {
+                  rows: slide_rows,
+                  slidesToShow: 2,
+                  slidesToScroll: 2
+              }
+            },
+            {
+              breakpoint: 768,
+              settings: {
+                  rows: slide_rows,
+                  slidesToShow: 2,
+                  slidesToScroll: 1
+              }
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                  rows: slide_rows,
+                  slidesPerRow: 1,
+                  slidesToShow: 1,
+                  slidesToScroll: 1
+              }
+            }
+          ]
+      });      
+  }           
+ });       
+</script>
+
+{% schema %}
+  {
+    "name": "Homepage Top Banner",
+    "settings": [
+     {
+      "type": "checkbox",
+      "id": "display_homepage_top_banner",
+      "label": "Display Homepage Top Banner?",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "space_on",
+      "label": "Space on",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "space_below",
+      "label": "Space below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 80
+    },
+    {
+      "type": "color",
+      "id": "ct_dot_color",
+      "label": "Dots color",
+      "default" : "#a7a7a9"
+    },
+    {
+      "type" : "text",
+      "id" : "space_move_up",
+      "label" : "Dots move up",
+      "default" : "-70",
+      "info" : "Default -70"
+    },
+    {
+      "type": "select",
+      "id": "slider_row",
+      "label": "Slider Rows",
+      "options": [
+          {
+              "value": "1",
+              "label": "1"
+          },
+          {
+              "value": "2",
+              "label": "2"
+          }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "slider_column",
+      "label": "Show Column",
+      "options": [
+          {
+              "value": "1",
+              "label": "1"
+          },
+          {
+              "value": "2",
+              "label": "2"
+          },
+          {
+              "value": "3",
+              "label": "3"
+          }
+      ],
+      "default": "3"
+    },
+    {
+      "type" : "text",
+      "id" : "banner_image_height_desktop",
+      "label" : "Banner Image Height Desktop",
+      "default" : "420",
+      "info" : "Default 420"
+    },
+    {
+      "type" : "text",
+      "id" : "banner_image_height_mobile",
+      "label" : "Banner Image Height Mobile",
+      "default" : "400",
+      "info" : "Default 400"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner Top",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "ct_img",
+          "label": "Select image",
+          "info" : "Recommended Image: Width x Height (370 x 420)PX"
+        },
+        {
+          "type": "color",
+          "id": "ct_backgound_no_image",
+          "label": "Background color if no banner image",
+          "default" : "#f5f5f5"
+        },
+        {
+          "type": "color",
+          "id": "ct_color_heading_no_image",
+          "label": "Heading color if no banner image",
+          "default" : "#0f0f0f"
+        },
+        {
+          "type": "color",
+          "id": "ct_color_desc_no_image",
+          "label": "Description color if no banner image",
+          "default" : "#5f5f5f"
+        },
+        {
+          "type": "color",
+          "id": "ct_color_link_text_no_image",
+          "label": "Link Text color if no banner image",
+          "default" : "#0f0f0f"
+        },
+        {
+          "type" : "text",
+          "id" : "ct_heading",
+          "label" : "Heading",
+          "default" : "Milancelos"
+        },
+        {
+          "type" : "text",
+          "id": "font_size_heading",
+          "label" : "Font size heading",
+          "default" : "30px"
+        },
+        {
+          "type" : "color",
+          "id": "color_heading",
+          "label": "Heading color",
+          "default" : "#fff"
+        },
+        {
+          "type" : "text",
+          "id" : "ct_desc",
+          "label" : "Description text",
+          "default" : " Maecenas quam odio pellentesque eget laoreet sitae ornare et nedue class aptentos."
+        },
+        {
+          "type" : "text",
+          "id": "font_size_desc",
+          "label" : "Font size Description",
+          "default" : "12px"
+        },
+        {
+          "type" : "color",
+          "id": "color_desc",
+          "label": "Description color",
+          "default" : "#fff"
+        },
+        {
+          "type" : "text",
+          "id" : "ct_link_text",
+          "label" : "Link Text",
+          "default" : "Learn More"
+        },
+        {
+          "type": "url",
+          "id" : "ct_link",
+          "label" : "Link"
+        },
+        {
+          "type" : "text",
+          "id": "font_size_link_text",
+          "label" : "Font size Link Text",
+          "default" : "14px"
+        }, 
+        {
+          "type" : "color",
+          "id": "color_link_text",
+          "label": "Link Color",
+          "default" : "#fff"
+        },
+        {
+          "type": "select",
+          "id": "banner_image_content_position",
+          "label": "Banner Image Content position",
+          "default": "bottom",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+              {
+              "value": "middle",
+              "label": "Middle"
+              },
+              {
+              "value": "bottom",
+              "label": "Bottom"
+              }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Top Banner",
+      "category": "block images",
+      "blocks": [
+      {
+        "type": "banner"
+      },
+      {
+        "type": "banner"
+      },
+      {
+        "type": "banner"
+      }
+    ]
+    }
+  ]
+}
+{% endschema %}

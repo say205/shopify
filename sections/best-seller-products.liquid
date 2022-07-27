@@ -1,0 +1,164 @@
+{% case section.settings.best_sellers_results_per_row %}
+  {% when '2' %}
+  	{%- assign grid_item_width = 'col-6' -%}
+    {%- assign rowlt = '2' -%}
+	  {%- assign row = 'two-items' -%}
+
+  {% when '3' %}
+  	{%- assign grid_item_width = 'col-6 col-md-4' -%}
+    {%- assign rowlt = '3' -%}
+	  {%- assign row = 'three-items' -%}
+
+  {% when '4' %}
+  	{%- assign grid_item_width = 'col-6 col-md-4 col-lg-3' -%}
+    {%- assign rowlt = '4' -%}
+	  {%- assign row = 'four-items' -%}
+
+  {% when '5' %}
+  	{%- assign grid_item_width = 'col-6 col-md-4 col-lg-3 col5' -%}
+    {%- assign rowlt = '4' -%}
+	  {%- assign row = 'five-items' -%}
+
+  {% when '6' %}
+  	{%- assign grid_item_width = 'col-6 col-md-4 col-lg-3 col-xl-2' -%}
+    {%- assign rowlt = '4' -%}
+	  {%- assign row = 'six-items' -%}
+{% endcase %}
+
+{% if section.settings.show_best_sellers_product %}
+<section id="best-sellers-{{section.id}}" class="best-seller-product" data-best-seller-products>
+  {% if section.settings.title != blank %}
+  <div class="widget-title not-before">
+    <h3 class="box-title">
+      <span class="title"> 
+        {% render 'multilang' with section.settings.title %}
+      </span>
+    </h3>
+  </div>
+  {% endif %}
+
+  <div class="widget-product">
+    <div class="products-grid row {{ row }} has-slick" data-infinite="false" data-row="{{section.settings.best_sellers_results_per_row}}" data-rowlt="{{rowlt}}" data-rowtb="4" data-rowtblg="3" data-rowbm="2">
+      {% for product in collections[section.settings.best_seller_collection].products limit:section.settings.slider_best_seller_limit_all %}
+      <div class="grid-item {{ grid_item_width }}{% if settings.product_image_border %} grid-item-border{% endif %} ">
+        {% render 'product-grid-item' with product as product %}
+      </div>
+
+      {% else %}
+      {% for product in (1..section.settings.slider_best_seller_limit_all) %}
+      <div class="grid-item {{ grid_item_width }}">
+        <div class="grid-view-item no-product">
+          <div class="product-top">
+            <div class="not_img">
+              Product Img
+            </div>
+          </div>
+
+          <div class="product-bottom">
+            <div class="product-title">
+              <span>
+                Your product's name
+              </span>
+            </div>
+
+            <div class="price-box">
+              <span> $250.00 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %} 
+
+<style>
+  #best-sellers-{{section.id}}{
+    margin-top: {{ section.settings.space_on }}px;
+    margin-bottom: {{ section.settings.space_below }}px;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Best Sellers Products",
+    "settings": [
+      {
+        "type": "range",
+        "id": "space_on",
+        "label": "Space on",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 25
+      },
+      {
+        "type": "range",
+        "id": "space_below",
+        "label": "Space below",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50
+      },
+      {
+        "type": "checkbox",
+        "id": "show_best_sellers_product",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Best Sellers"
+      },  	  
+      {
+        "type": "collection",
+        "id": "best_seller_collection",
+        "label": "Collection to use"
+      },
+      {
+        "type": "range",
+        "id": "slider_best_seller_limit_all",
+        "label": "Number of new products to show",
+        "min": 3,
+        "max": 30,
+        "step": 1,
+        "default": 16
+      },
+      {
+        "type": "select",
+        "id": "best_sellers_results_per_row",
+        "label": "Products per row",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ],
+        "default": "4"
+      }  	  
+	],
+  "presets": [
+      {
+        "name": "Best Sellers Products",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

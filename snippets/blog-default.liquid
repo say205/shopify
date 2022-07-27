@@ -1,0 +1,29 @@
+<div class="halo-blog-page">
+  <div class="container">
+    <div class="page-header">
+      {% if current_tags %}    
+      <h1>
+        <a href="{{ blog.url }}">
+          {% include 'multilang' with page_title %}
+        </a>
+        &raquo; {{ current_tags.first }}
+      </h1>
+      {% else %}    
+      <h1>
+        {% include 'multilang' with page_title %}
+      </h1>
+      {% endif %}
+    </div>
+     
+    <div class="row flex-direction">
+      <aside class="blog-sidebar col-12 col-md-12 col-xl-3">
+        {% section 'sidebar-blog' %}
+      </aside>
+
+      <div class="block-row col-main col-12 col-md-12 col-xl-9">       
+        {% section 'blog-template' %}
+      </div>
+    </div>
+  </div>
+</div>
+

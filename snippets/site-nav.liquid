@@ -1,0 +1,182 @@
+<ul class="site-nav">
+  {% if section.settings.horizontal_linklist != blank %}
+    {% assign menu = linklists[section.settings.horizontal_linklist].links %}
+  {% else %}
+    {% assign menu = linklists.main-menu.links %}
+  {% endif %}
+
+  {% for link in menu %}
+  {%- assign i = forloop.index | downcase -%}
+  {%- assign cat = link.title | handleize -%}
+
+  {% if section.settings.display_megamenu %}
+
+  {%- assign is_megamenu = false -%}
+  {% for block in section.blocks %}
+  {% for i in (1..5) %}
+
+  {% capture cap_megamenu_item %}megamenu_items_{{ i }}{% endcapture %}
+  
+  {% capture cap_banner_first_style %}banner_first_style_{{ i }}{% endcapture %}
+  {% capture cap_link_banner_first_style %}link_banner_first_style_{{ i }}{% endcapture %}
+
+  {% capture cap_banner_second_style %}banner_second_style_{{ i }}{% endcapture %}
+  {% capture cap_link_banner_second_style %}link_banner_second_style_{{ i }}{% endcapture %}
+  
+  {% if block.settings[cap_megamenu_item] != blank %}
+  {%- assign megamenu_item = block.settings[cap_megamenu_item] | handleize -%}
+  {% if megamenu_item == cat %}
+
+  {%- assign is_megamenu = true -%}
+  {%- assign block_style = block.type -%}
+  
+  {%- assign featured_product = block.settings.featured_product -%}
+  {%- assign product = all_products[featured_product] -%}
+  {%- assign featured_product_limit_all = block.settings.featured_product_limit_all -%}
+  {%- assign title_featured_product = block.settings.title_featured_product -%}         
+
+  {%- assign banner_first_style = block.settings[cap_banner_first_style] -%}
+  {%- assign link_banner_first_style = block.settings[cap_link_banner_first_style] -%}
+  
+  {%- assign banner_second_style = block.settings[cap_banner_second_style] -%}
+  {%- assign link_banner_second_style = block.settings[cap_link_banner_second_style] -%}
+
+  {%- assign dpl_column_first_style = block.settings.dpl_column_first_style_1 -%}
+  {%- assign dpl_column_second_style = block.settings.dpl_column_second_style_1 -%}
+
+  {%- assign dpl_column_first_style_2 = block.settings.dpl_column_first_style_2 -%}
+  {%- assign dpl_banner_bottom_style_2 = block.settings.dpl_banner_bottom_style_2 -%}
+
+  {%- assign banner_bottom_style_2_text = block.settings.banner_bottom_style_2_text -%}
+  {%- assign banner_bottom_style_2_background = block.settings.banner_bottom_style_2_background -%}
+  {%- assign banner_bottom_style_2_text_color = block.settings.banner_bottom_style_2_text_color -%}
+
+  {%- assign dpl_column_right_style_4 = block.settings.dpl_column_right_style_4 -%}
+
+
+
+  {%- assign per_row_1 = block.settings.style_1_per_row -%}
+  {%- assign per_row_2 = block.settings.style_2_per_row -%}
+  {%- assign per_row_4 = block.settings.style_4_per_row -%}
+  
+  {% endif %}
+  {% endif %}  
+
+  {% endfor %}
+  {% endfor %}
+
+  {% endif %}  
+
+  
+  {% if section.settings.enable_sale %}
+      {% assign sale_item = section.settings.sale_item | split:"," | strip | downcase | handle %}
+      {% assign sale = link.title | downcase | handle  %}
+  {% endif %}
+
+  {% if section.settings.enable_new %}
+      {% assign new_item = section.settings.new_item | split:"," | strip | downcase | handle %}
+      {% assign new = link.title | downcase | handle  %}
+  {% endif %}
+
+  {% if section.settings.enable_hot %}
+      {% assign hot_item = section.settings.hot_item | split:"," | strip | downcase | handle %}
+      {% assign hot = link.title | downcase | handle  %}
+  {% endif %}
+  
+  <li class="item{% if is_megamenu %} menu-lv-1 dropdown mega-menu{% else %}{% if linklists[link.handle] != empty %} menu-lv-1 dropdown no-mega-menu{% endif %}{% endif %}{% if section.settings.enable_new and items_list_new contains new %} icon_new{% endif %}">
+    <a class="{%if linklists[link.handle] != empty %}menu__moblie {% endif %}{% if link.active %}current {% endif %}"  href="{{ link.url }}">
+      {% render 'multilang' with link.title %}
+                  
+      {% if linklists[link.handle] != empty %}
+      <span class="icon-dropdown" data-toggle-menu-mb>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </span>
+      {% endif %}
+
+      {% if sale_item contains sale %}
+        <label class="icon-label icon_sale">
+            {% render 'multilang' with section.settings.lb_sale %}
+        </label>
+      {% endif %}
+
+      {% if new_item contains new %}
+        <label class="icon-label icon_new">
+            {% render 'multilang' with section.settings.lb_new %}
+        </label>
+      {% endif %}
+
+      {% if hot_item contains hot %}
+        <label class="icon-label icon_hot">
+            {% render 'multilang' with section.settings.lb_hot %}
+        </label>
+      {% endif %}
+      
+    </a> 
+    {% if linklists[link.handle] != empty %}
+    <div class="sub-menu-mobile menu-mb-translate">
+      <div class="menu-mb-title">
+          <span class="icon-dropdown">
+          <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </span>
+          {% render 'multilang' with link.title %}
+      </div>
+            
+      {%- assign link_child = link.handle -%}
+      {% if section.settings.display_megamenu %}  
+
+      {% if is_megamenu %}
+        <div class="site-nav-dropdown shadow {{ block_style }}" style ="max-width:{% if block_style == "style_1"%}{{height_1}}{% elsif block_style == "style_2"%}{{height_2}}{% elsif block_style == "style_3"%}{{height_3}}{% elsif block_style == "style_4"%}{{height_4}}{% endif %};">
+        <div class="menu-mb-title" style="display: none;">
+          <span class="icon-dropdown no-event">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </span>
+          {% render 'multilang' with link.title %}
+        </div>
+
+        {% render 'mega-menu' 
+                link_child: link_child, 
+                block_style: block_style,
+                featured_product: featured_product,
+                featured_product_limit_all: featured_product_limit_all,
+                title_featured_product: title_featured_product,
+                product: product,
+                banner_first_style: banner_first_style,
+                link_banner_first_style: link_banner_first_style,
+                banner_second_style: banner_second_style,
+                link_banner_second_style: link_banner_second_style,
+                dpl_column_first_style: dpl_column_first_style,
+                dpl_column_second_style: dpl_column_second_style,
+                dpl_column_first_style_2: dpl_column_first_style_2,
+                dpl_banner_bottom_style_2: dpl_banner_bottom_style_2,
+                banner_bottom_style_2_text: banner_bottom_style_2_text,
+                banner_bottom_style_2_background: banner_bottom_style_2_background,
+                banner_bottom_style_2_text_color: banner_bottom_style_2_text_color,
+                dpl_column_right_style_4: dpl_column_right_style_4,
+                per_row_1: per_row_1,
+                per_row_2: per_row_2,
+                per_row_4: per_row_4
+                %}
+
+
+      </div>
+
+      {% else %}
+      
+        {% if linklists[link.handle] != empty %}
+          {% render 'dropdown-menu', link_child: link_child %}
+        {% endif %}
+      
+      {% endif %}
+      
+      {% else %}
+        {% if linklists[link.handle] != empty %}
+          {% render 'dropdown-menu', link_child: link_child %}
+        {% endif %}
+      
+      {% endif %}
+      </div> 
+
+    {% endif %}  
+  </li>
+  {% endfor %}
+</ul>

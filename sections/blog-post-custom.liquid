@@ -1,0 +1,194 @@
+{% if section.blocks.size > 0 or section.settings.dpl_blog_custom %}
+{% if section.settings.dpl_blog_custom %}
+<div class="blog-detail-custom-block" id="custom-block-{{section.id}}">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 blog-custom-content">
+                <div class="row">
+                {% for block in section.blocks %}
+                    {% if block.type == 'blogimage' %}
+                    <div class="col-6 blog-item">
+                        <div class="content-image">
+                            <a class="animate-scale" href="{{ block.settings.link }}">
+                                {%- assign img_url = block.settings.image | img_url: 'original', crop: 'center' -%}
+                                {% if block.settings.image != blank %}
+                                <img data-src="{{ img_url }}"
+                                    src="{{ img_url }}" alt="{{ block.settings.image.alt | default: shop.name }}" itemprop="logo"
+                                    class="lazyautosizes lazyloaded" data-sizes="auto">
+                                {% else %}
+                                <div class="not_img">
+                                420 x 470px
+                                </div>   
+                                {% endif %}
+                            </a>
+                             <div class="banner-content">
+                                {% if block.settings.banner_heading != blank %}
+                                <h2 class="banner-heading"
+                                    style="{% if block.settings.font_size_banner_heading != blank %}
+                                            font-size: {{ block.settings.font_size_banner_heading }} !important;
+                                            {% endif %}
+                                            {% if block.settings.color_banner_heading != blank %}
+                                            color:{{ block.settings.color_banner_heading }};
+                                            {% endif %}">
+                                    {% render 'multilang' with block.settings.banner_heading  %}
+                                </h2>
+                                {% endif %}
+
+                                {% if block.settings.banner_des != blank %}
+                                <p class="banner-des"
+                                    style="{% if block.settings.font_size_banner_des != blank %}
+                                            font-size: {{ block.settings.font_size_banner_des }};
+                                            {% endif %}
+                                            {% if block.settings.color_banner_des != blank %}
+                                            color: {{ block.settings.color_banner_des }};
+                                            {% endif %}">
+                                    {% render 'multilang' with block.settings.banner_des  %}
+                                </p>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>  
+                    {% endif %}
+                {% if block.settings.display_parallax %}
+                <style>
+                @media (min-width: 1200px) {
+                    .banner-parallax .parallax-image {
+                        height: {{ block.settings.height_img_parallax }};
+                    }
+                }          
+                </style>
+                {% endif %}
+                {% endfor %}
+                </div>
+            </div>   
+        </div>
+    </div>
+    {% if section.settings.quote_title != blank  or section.settings.quote_des != blank %}
+        <div class="quote-detail rte">
+          {% if section.settings.quote_title != blank %}
+          <h5>
+            {% render 'multilang' with section.settings.quote_title %}
+          </h5>
+          {% endif %}
+          
+          {% if section.settings.quote_des != blank %}
+          <blockquote>
+            {% render 'multilang' with section.settings.quote_des %}
+          </blockquote>
+          {% endif %}
+         
+        </div>
+    {% endif %}
+</div>
+<style>
+  .blog-detail-custom-block .banner-content h2 span{
+    background-image: linear-gradient(#fff 97%, {{section.settings.color_banner_heading_line}} 3%);
+  }
+</style>
+{% endif %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Blog Detail Custom",
+	"class": "blog-detail-custom-baner-sections",
+    "max_blocks": 2,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Block Description in Blog Detail"
+        },
+        {
+            "type" : "checkbox",
+            "id" : "dpl_blog_custom",
+            "label" : "Enable",
+            "default" : true
+        },
+        {
+            "type": "header",
+            "content": "Quote Detail"
+        },
+        {
+            "type": "text",
+            "id": "quote_title",
+            "label": "Quote Title"
+        },
+        {
+            "type": "textarea",
+            "id": "quote_des",
+            "label": "Quote Description"
+        },
+        {
+            "type" : "color",
+            "id" : "color_banner_heading_line",
+            "label" : "Line Heading Color",
+            "default" : "#c7c7c7"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "blogimage",
+            "name": "Block Image",
+            "settings": [
+            {
+                "type": "image_picker",
+                "id": "image",
+                "label" : "Select Image"
+            },
+            {
+                "type": "header",
+                "content": "Banner Content"
+            },
+            {
+                "type" : "text",
+                "id" : "banner_heading",
+                "label" : "Banner Heading",
+                "default" : "Metropolis"
+            },
+            {
+                "type" : "text",
+                "id" : "font_size_banner_heading",
+                "label" : "Heading Font Size ",
+                "default" : "24px"
+            },
+            {
+                "type" : "color",
+                "id" : "color_banner_heading",
+                "label" : "Heading Color",
+                "default" : "#0f0f0f"
+            },
+            {
+                "type" : "textarea",
+                "id" : "banner_des",
+                "label" : "Banner Description",
+                "default": "Pellentesque posuere orci lobortis scelerisque blandit. Donec id tellus lacinia an tincidunt risus an consequat delit quisquemos."
+            },
+            {
+                "type" : "text",
+                "id" : "font_size_banner_des",
+                "label" : "Description Font Size",
+                "default" : "12px"
+            },
+            {
+                "type" : "color",
+                "id" : "color_banner_des",
+                "label" : "Description Color",
+                "default" : "#5f5f5f"
+            }
+        ]
+    }
+    ],
+    "presets": [
+        {
+            "name": "Custom Block Banners",
+            "category": "Banner",
+            "blocks": [
+                {
+                    "type": "blogimage"
+                }         
+            ]
+        }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,141 @@
+{% if section.settings.display_policy_block %}
+<section class="policys-block policys-block-home">
+  <div class="container">
+    <div class="row policy-slider has-slick not-arrows" data-infinite="true" data-row="4" data-rowtb="3" data-rowtblg="2" data-rowbm="1">
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {%- assign column_size = 'col-12' -%}
+        {% when 2 %}
+          {%- assign column_size = 'col-12 col-md-6' -%}
+        {% when 3 %}
+          {%- assign column_size = 'col-12 col-lg-4' -%}
+        {% when 4 %}
+          {%- assign column_size = 'col-12 col-sm-6 col-lg-4 col-xl-3' -%}
+      {% endcase %}
+      
+      {% for block in section.blocks %}
+      {% if block.settings.policy_text != blank %}
+      <div class="item {{ column_size }}">
+        <div class="policy-item">
+          {% if block.settings.icon != blank %}
+          <span class="policy-icon policy-icon-{{ block.id }}">
+            {{ block.settings.icon }}
+          </span>
+          <style>
+            .policys-block-home .policy-icon-{{ block.id }} svg {
+              -moz-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              -o-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              -ms-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              -webkit-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+            }
+          </style>
+          {% endif %}
+
+          <div class="policy-text">
+            {% render 'multilang' with block.settings.policy_text %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  
+</section>
+{% endif %}
+
+
+<style>
+  .policys-block-home {
+    background-color: {{ section.settings.bg_policy_block }} !important;
+    color: {{ section.settings.color_policy_text }} !important;
+  }
+  
+  .policys-block-home .policy-text {
+    font-size: {{ section.settings.text_font_size }}px !important;
+  }
+  
+  .policys-block-home .policy-icon .fa {
+    font-size: {{ section.settings.icon_font_size }}px;
+  }
+
+  .policys-block-home .policy-icon svg {
+      width: {{ section.settings.icon_font_size }}px;
+      height: {{ section.settings.icon_font_size }}px;
+      fill: {{ section.settings.color_policy_text }};
+      stroke: none;
+  }
+  .policys-block-home .policy-icon img {
+    max-height: {{ section.settings.icon_font_size }}px;
+  }
+
+  @media (min-width: 540px) {
+    .policys-block-home .item {
+      border-left: none !important;
+    }
+    
+    .policys-block-home .item + .item {
+      border-left-color: none !important;
+    }
+  }
+  
+  @media (max-width: 991px) {
+    .policys-block-home .policy-item {
+      padding: 16px 0 15px;
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Policies Block",
+      "max_blocks": 4,
+    "settings": [
+      {
+        "type" : "checkbox",
+        "id" : "display_policy_block",
+        "label" : "Display Policys Block",
+        "default" : true
+      },
+      {
+        "type" : "color",
+        "id" : "bg_policy_block",
+        "label" : "Background Policys Block",
+        "default" : "#000"
+      },
+      {
+        "type" : "color",
+        "id" : "color_policy_text",
+        "label" : "Color Text",
+        "default" : "#fff"
+      },
+       {
+        "type" : "text",
+        "id": "text_font_size",
+        "label" : "Text Font Size",
+        "default": "12"
+      }
+            
+    ],
+    "blocks": [
+      {
+        "type": "textarea",
+        "name": "Text",
+        "settings": [
+          {
+            "type" : "textarea",
+            "id" : "policy_text",
+            "label" : "Text",
+            "default" : "Free Shipping Worldwide"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+        "name": "Policies Block",
+        "category": "text"
+    }]
+
+  }
+{% endschema %}

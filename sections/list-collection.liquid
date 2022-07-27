@@ -1,0 +1,109 @@
+<header class="page-header">
+  <h2>
+    {% render 'multilang' with section.settings.collection_title %}
+  </h2>
+</header>
+
+<div class="list-collection">
+  
+  {% comment %}
+    Loop through each collection, except 'frontpage'
+  {% endcomment %}
+  
+  <div class="row" data-collection-container>
+    {% if section.settings.style_categories == 'style_show_all' %}
+        {% for collection in collections %}
+          {% if collection.handle != 'frontpage' and collection.all_products_count > 0 %}
+                {% render 'list-collection-item', collection: collection%}
+          {% endif %}
+        {% endfor %}
+
+    {% else %}
+      {% for block in section.blocks %}
+        {% assign collection = collections[block.settings.collection] %}
+          {% render 'list-collection-item', block: block, collection: collection %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {% if collections.size or section.blocks.size > 12 %}
+    <div class="padding">
+      <ul id="collection-paginate" class="collection-paginate pagination-page"></ul>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+  {
+    "name": "List Collection pages",
+    "settings": [
+	   {
+  		"type": "text",
+  		"id": "collection_title",
+  		"label": "Collection Title",
+      "default": "Collection"
+	   },
+	   {
+        "type": "select",
+        "id": "list_collection_results_per_row",
+        "label": "Products per row",
+        "default": "4",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+	    {
+        "type": "radio",
+        "id": "style_categories",
+        "label": "Show all \/ Only a few categories",
+        "options": [
+          {
+            "value": "style_show_all",
+            "label": "Show all"
+          },
+          {
+            "value": "style_little",
+            "label": "Only a few categories"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "display_collection_des",
+        "label": "Display Collections Description?",
+        "default": true
+      }
+	  ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+

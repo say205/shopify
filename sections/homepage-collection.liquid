@@ -1,0 +1,192 @@
+{% if section.settings.display_homepage_collection %}
+<section class="homepage-collection-wrapper" id="section-{{section.id}}">
+  <div class="container">
+    <div class="row">
+      <div class="column-left col-sm-12 col-lg-4">
+        {% if section.settings.homepage_collection_title != blank %}
+          <div class="widget-title">
+            <h3 class="box-title">
+              {% render 'multilang' with section.settings.homepage_collection_title %}
+            </h3>
+          </div>
+        {% endif %}
+
+        {% if section.settings.homepage_collection_desc != blank %}
+          <p class="desc-text">
+            {% render 'multilang' with  section.settings.homepage_collection_desc %}
+          </p>
+        {% endif %}
+
+        {% if section.settings.homepage_collection_link_text %}
+          <a class="collection-link" title="{{ section.settings.homepage_collection_link_text }}" href="{{ section.settings.homepage_collection_link }}">
+            {% render 'multilang' with  section.settings.homepage_collection_link_text %}
+          </a>
+        {% endif %}
+
+      </div>
+      <div class="column-right col-sm-12 col-lg-8">
+        <div class="row products-grid has-slick" data-infinite="false" data-row="{{section.settings.list_collection_results_per_row}}" {% if section.settings.list_collection_results_per_row == '5' %}data-rowlt="4" {% else %}data-row-lt="{{section.settings.list_collection_results_per_row}}"{% endif%}data-rowtb="3" data-rowtblg="3" data-rowbm="2">
+          {% for block in section.blocks %}
+            {% assign collection = collections[block.settings.collection] %}
+            <div class="grid-item {% if section.settings.list_collection_results_per_row == '3' %}col-xl-4{% elsif section.settings.list_collection_results_per_row == '4' %}col-xl-3{% else %}col-xl{% endif%}">
+
+            {% comment %}
+            Use capture to put the collection title in a variable that is used in liquid filters
+            {% endcomment %}
+
+            {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+            <div class="product-top animate-hvr-translate">
+              <a href="{{ collection.url }}" title="{{ collection_title }}">
+                {% if collection.image %}
+                <img data-src="{{collection.image.src | img_url: 'large'}}" alt="collection_title" {% render 'lazy_load' %}>
+                {% elsif collection.description contains 'img' %}
+                {% assign image = collection.description | split: '<img' | last | split: '>' | first %}
+                <img {{ image }} alt="{{ collection_title }}" class="test" />
+                {% else %}
+                {{ collection.products.first.featured_image | product_img_url: 'large' | img_tag: collection_title }}
+                {% endif %}
+              </a>
+            </div>
+
+            <div class="collection-title-wrapper">
+              <div class="collection-title">
+                <h3 class="title">
+                  <a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: collection_title }}" {% if settings.enable_multilang %}data-translate="collections.general.link_title|title:{{collection_title}}" translate-item="title"{% endif %}>
+                    {% render 'multilang' with collection.title %}
+                  </a>
+                </h3>
+                <span class="count-products" {% if settings.enable_multilang %}data-translate="collections.general.items_with_count|count:{{collection.all_products_count}}"{% endif %}>
+                  {{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}
+                </span>
+                {% comment %}<div class="desc" style="display: none;">
+                  {% if settings.enable_multilang and collection.description contains '[lang2]' %}
+                  <div class="lang1">{{ collection.description | split: '[lang2]' | first | strip_html | truncatewords: 25 }}</div>
+                  <div class="lang2">{{ collection.description | split: '[lang2]' | last | strip_html  | truncatewords: 25 }}</div>
+                  {% else %}
+                  <div>{{ collection.description | strip_html | truncatewords: 24 }}</div>
+                  {% endif %}
+                </div>{% endcomment %}
+                <div class="btn-shadow">
+                  <a href="{{ collection.url }}" class="btn" {% if settings.enable_multilang %}data-translate="collections.general.shop_the_collection"{% endif %}>
+                    {{ 'collections.general.shop_the_collection' | t }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  #section-{{section.id}}{
+    margin-top: {{ section.settings.space_on }}px;
+    margin-bottom: {{ section.settings.space_below }}px;
+  }
+
+</style>
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Homepage Collection",
+    "class": "homepage-collection-section",
+    "settings": [
+     {
+      "type": "checkbox",
+      "id": "display_homepage_collection",
+      "label": "Display Homepage Collection?",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "space_on",
+      "label": "Space on",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "space_below",
+      "label": "Space below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 60
+    },
+    {
+    "type": "text",
+    "id": "homepage_collection_title",
+    "label": "Title",
+    "default": "Shop The Collections"
+    },
+    {
+    "type": "text",
+    "id": "homepage_collection_desc",
+    "label": "Description",
+    "default": "Nam tempus turpis at metus scelerisque placerat nulla deumantos sollicitudin delos felis. Pellentesque diam dolor an elementum et lobortis at mollis ut risus. Curabitur semper sagittis mi condimentum..."
+    },
+    {
+    "type": "text",
+    "id": "homepage_collection_link_text",
+    "label": "Link text",
+    "default": "Discover"
+    },
+    {
+      "type": "url",
+      "id": "homepage_collection_link",
+      "label": "Link",
+      "info": "Optional"
+    },
+    {
+      "type": "select",
+      "id": "list_collection_results_per_row",
+      "label": "Products per row",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ],
+      "default": "4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Collection",
+      "category": "Collection",
+      "blocks": [
+      {
+        "type": "collection"
+      }
+    ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,132 @@
+{% if section.settings.display_related_products or section.settings.display_recently_viewed_products %}
+<section class="product-widget-tab" data-id="{{section.id}}" id="section-{{section.id}}" data-product-tabs1>
+  <div class="container">
+    <div class="widget-product">
+      {% if section.settings.display_related_products == false and section.settings.display_recently_viewed_products == true %}
+          {% assign tab2_active = true %}
+      {% endif %}
+
+      <ul class="nav nav-tabs list-product-tabs">
+        {% if section.settings.display_related_products %}
+          <li>
+            <a href="#tab-product-related" data-target="#product-tab-related" data-product-tabTop1 class="tab-links active" id="tab-related" data-id="related" data-toggle="tab" role="tab" aria-selected="true">
+              {% render 'multilang' with section.settings.related_products_title %}
+            </a>
+            <span class="dots"></span>
+          </li>
+        {% endif %}
+
+        {% if section.settings.display_recently_viewed_products %}
+          <li>
+            <a href="#tab-product-recently-viewed" data-target="#product-tab-recently-viewed" data-product-tabTop1 class="tab-links{% if tab2_active%} active{% endif %}" id="tab-recently-viewed" data-id="recently-viewed" data-toggle="tab" role="tab" aria-selected="true">
+              {% render 'multilang' with section.settings.recently_viewed_products_title %}
+            </a>
+            <span class="dots"></span>
+          </li>
+        {% endif %}
+      </ul>
+      
+      <div class="tab-content product-tabs-content">      
+        <div class="tab-content show active" role="tabpanel" id="product-tab-related" data-product-TabContent1>
+            {% render 'related-products' %}
+        </div>
+        <div class="tab-content{% if tab2_active%} active{% endif %}" role="tabpanel" id="product-tab-recently-viewed" data-product-TabContent1>
+            {% render 'product-widget-recently-viewed' %}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+{% endif %}
+{% schema %}
+  {
+    "name": "Products Widget Tab",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_products_widget_tab",
+        "label": "Enable",
+        "default": true
+      },
+	    {
+        "type": "range",
+        "id": "space_on",
+        "label": "Space on",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "space_below",
+        "label": "Space below",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 70
+      },
+      {
+        "type": "checkbox",
+        "id": "display_related_products",
+        "label": "Display Related Products?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "related_products_title",
+        "label": "Title of related products block",
+        "default": "Related Products"
+      },
+      {
+        "type": "checkbox",
+        "id": "display_recently_viewed_products",
+        "label": "Display Recently Viewed Products?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "recently_viewed_products_title",
+        "label": "Title of recently viewed products",
+        "default": "Recently Viewed"
+      },
+      {
+        "type": "text",
+        "id": "slider_products_tab_limit_all",
+        "label": "Number of products to show",
+        "default": "8"
+      },
+      {
+        "type": "select",
+        "id": "products_tab_results_per_row",
+        "label": "Products per row",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ],
+        "default": "4"
+     }
+	]
+  }
+{% endschema %}
+<style>
+  #section-{{section.id}}{
+    margin-top: {{ section.settings.space_on }}px;
+    margin-bottom: {{ section.settings.space_below }}px;
+  }
+</style>

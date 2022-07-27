@@ -1,0 +1,81 @@
+{% if settings.enable_custom_engraving %}
+<div class="modal fade halo_modal-custom" id="product_custom_engraving" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        {% if settings.custom_engraving_title != blank %}
+        <h5 class="modal-title">
+          {% render 'multilang' with settings.custom_engraving_title %}
+        </h5>
+        {% endif %}
+        
+        <a data-dismiss="modal" class="close close-modal" title="{{ 'cart.ajax_cart.close' | t }}" href="javascript:void(0)">
+          {% render 'icon-close' %}
+        </a>
+      </div>
+      
+      <div class="modal-body">
+        <div class="col-row row">
+
+          <div class="col-left col-12 col-sm-6">
+            {% if settings.custom_engraving_left_title %}
+              <h5 class="title">{% render 'multilang' with settings.custom_engraving_left_title %}</h5>
+            {% endif %} 
+              
+            <div class="col-item">
+
+              <input type="text" name="properties[Engraving-line1]" class="properties_line1" value="" placeholder="{{ settings.custom_engraving_place_holder_1 | split: '|' | first }}" maxlength="{{settings.info_character_number}}">
+              <div class="info-text">
+                <span class="text">{% render 'multilang' with settings.info_text %}</span>
+                <span class="number">{{settings.info_character_number}}</span>  
+              </div>
+
+              <input type="text" name="properties[Engraving-line2]" class="properties_line2" value="" placeholder="{{ settings.custom_engraving_place_holder_2 | split: '|' | first }}" maxlength="{{settings.info_character_number}}">
+              <div class="info-text">
+                <span class="text">{% render 'multilang' with settings.info_text %}</span>
+                <span class="number">{{settings.info_character_number}}</span>  
+              </div>
+
+            </div>
+
+            <div class="description">
+              {% if settings.custom_engraving_price != blank %}   
+                {% render 'multilang' with settings.custom_engraving_note %}
+              {% endif %}  
+            </div>
+
+            <div class="total-price">
+              <!-- {% if settings.custom_engraving_right_title != blank %}
+                <label>{% render 'multilang' with settings.custom_engraving_price_text %}</label>
+              {% else %}
+                <label {% if settings.enable_multilang %}data-translate="cart.label.total"{%endif%}>{{ 'cart.label.total' | t }}</label>
+              {% endif %} -->
+
+              {% if settings.custom_engraving_price != blank %}   
+                <div class="price">{{ settings.custom_engraving_price | money}}</div>
+              {% else %}
+                <div class="price">{{0 | money}}</div> 
+              {% endif %}
+
+            </div>
+            <div class="submit" data-error="{{ settings.error_value }}">
+              <input type="button" value="{{ settings.button_text_engraving }}" class="btn add_customize">
+            </div>
+          </div>
+
+          <div class="col-right col-12 col-sm-6 text-center">
+            {% if settings.custom_engraving_right_title %}
+              <h5 class="title">{% render 'multilang' with settings.custom_engraving_right_title %}</h5>
+            {% endif %}
+
+            {% if settings.custom_engraving_img != blank %}
+              <img src="{{ settings.custom_engraving_img | img_url: 'x370' }}" />
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

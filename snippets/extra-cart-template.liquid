@@ -1,0 +1,366 @@
+{% if settings.enable_extra_options1 %}
+<div class="extra-options extra-options-cart">
+    {% if settings.extra_options_title1 != blank %}
+    <h2 class="box-title">
+        {% render 'multilang' with settings.extra_options_title1 %}
+      </h2> {% endif %}
+    <div class="extra-image">
+        <div class="products-grid row">
+            {% for product in collections[settings.extra_options_collection1].products limit:settings.extra_options_products_limit1 %}
+            <!-- new label product -->
+            {% assign on_sale = false %} {% if product.compare_at_price_min > product.price_min %} {% assign on_sale = true %} {% endif %} {% assign sold_out = true %} {% if product.available %} {% assign sold_out = false %} {% endif %}
+
+            <!-- new label product -->
+            {% assign new_label = "New" %} {% assign tags = product.tags | split: ',' %}
+            <!-- end  -->
+
+            <!-- Custom label product -->
+            {% assign custom_label = "Custom Label" %} {% assign tags = product.tags | split: ',' %}
+            <!-- end  -->
+            <div class="grid-item cart-extra-item">
+                <div class="inner product-item{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}" data-product-id="product-{{ product.id }}">
+                    <div class="inner-top">
+                        <div class="content-left">
+                            <div class="product-image{% if product.images.size > 1 and settings.image_swap %} image-swap{% endif %}">
+                                <a href="{{ product.url | within: collection }}" class="product-grid-image" data-collections-related="/collections/{{collection.handle}}?view=related">
+                          {%- assign img_pr = product.featured_image.src | product_img_url: '420x' -%}
+                          {%- assign img_pr_1 = product.featured_image.src | product_img_url: '420x' -%}
+                          {%- assign img_pr_2 = product.featured_image.src | product_img_url: '420x' -%}
+
+                          {%- assign img_0 = product.images[0].src | product_img_url: '420x' -%}
+                          {%- assign img_01 = product.images[0].src | product_img_url: '420x' -%}
+                          {%- assign img_02 = product.images[0].src | product_img_url: '420x' -%}
+
+                          {%- assign img_1 = product.images[1].src | product_img_url: '420x' -%}
+                          {%- assign img_11 = product.images[1].src | product_img_url: '420x' -%}
+                          {%- assign img_12 = product.images[1].src | product_img_url: '420x' -%}
+
+                          {% if product.images.size > 1 and settings.image_swap %}
+                          <img data-src="{{ product.images[0].src | product_img_url: '420x' }}" alt="{{ product.images[0].alt | escape }}" {% render 'lazy_load' %}>
+
+                          <span class="images-two">
+                            <img data-src="{{ product.images[1].src | product_img_url: '420x'}}" alt="{{ product.images[1].alt | escape }}" {% render 'lazy_load' %}>
+
+                          </span> 
+                          {% else %}
+                          <img data-src="{{ product.featured_image.src | product_img_url: '420x' }}" alt="{{ product.featured_image.alt | escape }}" {% render 'lazy_load' %}>       
+                          {% endif %}
+                        </a>
+                            </div>
+
+                            {% if on_sale or sold_out or new_label or custom_label %}
+                            <div class="product-label">
+                                {% for t in tags %} {% assign tag = t | strip %} {% assign tag_value = tag | handleize %} {% if tag contains new_label %}
+                                <strong class="label new-label" {% if settings.enable_multilang %}data-translate="products.product.new" {% endif %}>{{ 'products.product.new' | t }}</strong>
+                                <br> {% endif %} {% endfor %} 
+
+                                {% if on_sale %}
+                                    {% if settings.type_label_sale == 'label_sale' %}
+                                    <strong class="label sale-label" {% if settings.enable_multilang %}data-translate="products.product.sale"{% endif %}>
+                                      {{ 'products.product.sale' | t }}
+                                    </strong>
+                                    {% else %}
+                                    <strong class="label sale-label">
+                                      -{{ product.variants[0].compare_at_price | minus:product.variants[0].price | times:100 | divided_by:product.variants[0].compare_at_price }}%
+                                    </strong>
+                                    {% endif %}
+                                <br>
+                                {% endif %}
+                                
+                                {% if sold_out %}
+                                <strong class="label sold-out-label" {% if settings.enable_multilang %}data-translate="products.product.sold_out" {% endif %}>
+                                  {{ 'products.product.sold_out' | t }}
+                                </strong>
+                                <br> {% endif %} {% for t in tags %} {% assign tag = t | strip %} {% assign tag_value = tag | handleize %} {% if tag contains custom_label %}
+                                <strong class="label custom-label" {% if settings.enable_multilang %}data-translate="products.product.custom_label" {% endif %}>{{ 'products.product.custom_label' | t }}</strong>
+                                <br> {% endif %} {% endfor %}
+
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        
+                        <div class="content-center">
+                          {% if settings.show_vendor %}
+                          <div class="product-vendor">
+                              {{ product.vendor | link_to_vendor }}
+                          </div>
+                          {% endif %}
+
+                          <a class="product-title" href="{{ product.url | within: collection }}">
+                            {% if settings.enable_multilang %}
+                              <span class="lang1">{{ product.title | split: '|' | first | truncatewords: 5}}</span>
+                              <span class="lang2">{{ product.title | split: '|' | last | truncatewords: 5}}</span>
+                              {% else %}
+                              {{ product.title | split: '|' | first | truncatewords: 5}}
+                            {% endif %}
+                          </a>
+
+                          <div class="price-box">
+                              {% if on_sale %}
+                              <div class="price-sale">
+                                  <span class="old-price">{{ product.compare_at_price_min | money }}</span>
+                                  <span class="special-price">+{% if product.price_varies %}{% render 'varies_from' %}{% endif %}{{ product.price_min | money }}</span>
+                              </div>
+                              {% else %}
+                              <div class="price-regular">
+                                  <span>+{% if product.price_varies %}{% render 'varies_from' %}{% endif %}{{ product.price_min | money }}</span>
+                              </div>
+                              {% endif %}
+                          </div>
+                        </div>
+                        
+                        {% comment %} Use for productGrid {% endcomment %}
+
+                        <div class="content-right" >
+                            <form action="/cart/add" method="post" id="form-strap">
+
+                            <div class="content-variant-extra">
+                              {% assign variantCount = product.variants | size %}
+                              <script>
+                                  window.productVariants = window.productVariants || {};
+                                  window.productVariants[{{ product.id }}] = {{ product.variants | json }};
+                              </script>
+                              <div id="product-variants">
+                                {% if variantCount > 1 %}
+
+                                {% assign pro = product %}
+                                {%- assign current_variant = pro.selected_or_first_available_variant -%}
+
+                                <div class="product-options" data-fbt-pro-id="product-options-{{ pro.id }}" data-product-id="{{ pro.id }}">
+                                    <select id="product-variants-{{ pro.id }}" name="id" style="display: none;">
+                                        {% for variant in product.variants %}
+                                        {% if variant.available %}
+                                        <option {% if variant == current_variant %} selected="selected" {% endif %} value="{{ variant.id }}" data-price="{{ variant.price }}" {%if variant.image.src != blank %}data-image="{{variant.image.src | product_img_url:'compact' }}"{% endif %}>
+                                            {{ variant.title }} - {{ variant.price | money }}
+                                        </option>
+                                        {% else %}
+                                        <option disabled="disabled" data-price="{{ variant.price }}">
+                                            {{ variant.title }} - {{ variant.price | money }} - {{ 'products.product.sold_out' | t }}
+                                        </option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% if settings.use_color_swatch %}
+                                      {% render 'extra-swatch' with pro as pro %}
+                                    {% endif %}
+                                </div>
+                                {% else %}
+                                  <input type="hidden" name="id"  value="{{ product.variants[0].id }}" data-price="{{ product.variants[0].price }}"/>
+                                {% endif %}
+                              </div>
+
+                              {% if settings.display_button %}
+                                <div class="action extra-action">
+                                  {% if sold_out %}
+                                  <button class="btn add-to-cart-btn" type="submit" disabled="disabled" {% if settings.enable_multilang %}data-translate="products.product.unavailable"{% endif %}>
+                                    {{ 'products.product.unavailable' | t }}
+                                  </button>
+                                  {% else %}
+                                  <input data-bundle-addToCart type="submit" name="add" class="btn btn-bundle" {% if settings.enable_multilang %}data-translate="products.product.add_to_cart_custom"{%endif%} value="{{ 'products.product.add_to_cart_custom' | t }}">
+                                  {% endif %}
+                                </div>
+                              {% endif %}
+                            </div>
+                            
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function() {
+      changeSwatchProductBundle();
+      
+      $('.cart-extra-item').each(function() {
+        var productItem = $(this).find('.product-options');
+        if(productItem.length){
+          var swatches = productItem.find('.swatch-element');
+          // Re-active all swatches
+          swatches.removeClass('soldout');
+          swatches.find(':radio').prop('disabled',false);
+          // // Check new swatch input
+          initSelectedSwatch(productItem);
+          // // Disable sold out swatches base on new checked inputs
+          disableSoldoutSwatchBundle(productItem);
+        }
+        
+      });
+      
+
+    });
+    var changeSwatchProductBundle = function() {
+    var swatchSlt = '.cart-extra-item .swatch :radio';
+
+    $(document).off('change.changeBundleSwatch', swatchSlt).on('change.changeBundleSwatch', swatchSlt, function(e) {
+      // debugger;
+
+        var self = $(this);
+        if (self.prop('checked')) {
+            var productItem = $(this).closest('.product-options');
+            var productId = productItem.data('product-id');
+            var variantList = window.productVariants[productId];
+            var optionIdx = self.closest('[data-option-idx]').data('option-idx');
+            var swatches = productItem.find('.swatch-element');
+            var thisVal = self.val();
+            var selectedVariant;
+            var fbtPrice = productItem.find('.fbt-prices'),
+                priceSale = fbtPrice.find('.price-sale'),
+                productPrice = fbtPrice.find('[data-fbt-price-change]');
+            var productInput = productItem.find('[name=id]');
+            // Get selected swatches
+            var selectedSwatchOpt1 = productItem.find('[data-option-idx="0"]').find('input:checked').val();
+            var selectedSwatchOpt2 = productItem.find('[data-option-idx="1"]').find('input:checked').val();
+            var selectedSwatchOpt3 = productItem.find('[data-option-idx="2"]').find('input:checked').val();
+            // Re-active all swatches
+            swatches.removeClass('soldout');
+            swatches.find(':radio').prop('disabled',false);
+            // Auto get first available variant
+            switch (optionIdx){
+                case 0:
+                    var availableVariants = variantList.find(function(variant){
+                        return variant.option1 == thisVal && variant.option2 == selectedSwatchOpt2 && variant.available;
+                    })
+                    if(availableVariants != undefined){
+                        selectedVariant =  availableVariants;
+                    }else{
+                         // variant was sold out, so auto select other available variant
+                        var altAvailableVariants = variantList.find(function(variant){
+                            return variant.option1 == thisVal && variant.available;
+                        })
+                        selectedVariant =  altAvailableVariants;
+                    };
+                    break;
+                case 1:
+                    var availableVariants = variantList.find(function(variant){
+                        return variant.option1 == selectedSwatchOpt1 && variant.option2 == thisVal && variant.available;
+                    })
+                    if(availableVariants != undefined){
+                        selectedVariant =  availableVariants;
+                    }else{
+                        // Something went wrong, if correct, never meet this
+                        console.log('Bundle Error: variant was soldout, on option selection #2')
+                    };
+                    break;
+                case 2:
+                    var availableVariants = variantList.find(function(variant){
+                        return variant.option1 == selectedSwatchOpt1 && variant.option2 == selectedSwatchOpt2 && variant.option3 == thisVal && variant.available;
+                    })
+                    if(availableVariants != undefined){
+                       selectedVariant =  availableVariants;
+                    }else{
+                        // Something went wrong, if correct, never meet this
+                        console.log('Bundle Error: variant was soldout, on option selection #3')
+                    };
+                    break;
+            }
+
+            productInput.val(selectedVariant.id);
+            // Check new swatch input
+            initSelectedSwatch(productItem);
+            // Disable sold out swatches base on new checked inputs
+            disableSoldoutSwatchBundle(productItem);
+
+            // Do select callback function
+
+            productItem.find('select').val(selectedVariant.id).trigger('change');
+
+        }
+    });
+}
+
+    var initSelectedSwatch = function(productItem) {
+        // $('.cart-extra-item').each(function() {
+            // var self = $(this);
+            var productId = productItem.data('product-id');
+            var selectedVariantId = productItem.find('[name="id"]').val();
+            var productOpts = productItem.find('.swatch');
+            var variantArr = window.productVariants[productId];
+
+            if (!variantArr) {
+                return;
+            }
+            // Get selected variant
+            var selectedVariant = variantArr.find(function(variant){
+                return variant.id == selectedVariantId
+            });
+
+            if (selectedVariant == undefined) {
+                return;
+            }
+
+            // // Check selected swatch
+            productOpts.each(function(index){
+                var optionIndex = 'option' + (index + 1);
+                var selectedSwatch = $(this).find('.swatch-element[data-value="'+selectedVariant[optionIndex]+'"]');
+
+                selectedSwatch.find('input').prop('checked', true);
+            })
+
+        // });
+
+    };
+
+    var disableSoldoutSwatchBundle = function(productItem){
+        var productId = productItem.data('product-id');
+        var variantList = window.productVariants[productId];
+        var options = productItem.find('[data-option-idx]');
+        var selectedSwatchOpt1 = productItem.find('[data-option-idx="0"]').find('input:checked').val();
+        var selectedSwatchOpt2 = productItem.find('[data-option-idx="1"]').find('input:checked').val();
+        var selectedSwatchOpt3 = productItem.find('[data-option-idx="2"]').find('input:checked').val();
+
+        options.each(function(){
+            var optionIndex = $(this).data('option-idx');
+            var swatch = $(this).find('.swatch-element');
+            
+            switch (optionIndex) {
+                case 0:
+                // loop through all swatchs in option 1 anh filter sold out swatch
+                swatch.each(function(){
+                    var swatchVal = $(this).data('value');
+                    var opt1Soldout = variantList.find(function(variant){
+                        return variant.option1 == swatchVal && variant.available;
+                    });
+                    if(opt1Soldout == undefined ){
+                        $(this).addClass('soldout');
+                        $(this).find(':radio').prop('disabled',true);
+                    }
+                })
+                break;
+                case 1:
+                // loop through all swatchs in option 2 anh filter sold out swatch
+                swatch.each(function(){
+                    var swatchVal = $(this).data('value');
+                    var opt1Soldout = variantList.find(function(variant){
+                        return variant.option1 == selectedSwatchOpt1 && variant.option2 == swatchVal && variant.available;
+                    });
+                    if(opt1Soldout == undefined){
+                        $(this).addClass('soldout');
+                        $(this).find(':radio').prop('disabled',true);
+                    }
+                })
+                break;
+                case 2:
+                // loop through all swatchs in option 3 anh filter sold out swatch
+                swatch.each(function(){
+                    var swatchVal = $(this).data('value');
+                    var opt1Soldout = variantList.find(function(variant){
+                        return variant.option1 == selectedSwatchOpt1 && variant.option2 == selectedSwatchOpt2 && variant.option3 == swatchVal && variant.available;
+                    });
+                    if(opt1Soldout == undefined){
+                        $(this).addClass('soldout');
+                        $(this).find(':radio').prop('disabled',true);
+                    }
+                })
+                break;
+            }
+        });
+    };
+</script>
+{% endif %}

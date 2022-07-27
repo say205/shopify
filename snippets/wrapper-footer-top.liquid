@@ -1,0 +1,5 @@
+{% if settings.footer_top_layout == 'policys' %}
+    {% section 'policy' %}
+{% elsif settings.footer_top_layout == 'newsletter' %}
+    {% section 'newsletter-block' %}
+{% endif %}

@@ -1,0 +1,239 @@
+{% if section.blocks.size > 0 %}
+<div class="product-banner-block" id="section-{{section.id}}">
+      <div class="full-banner product-banner">
+        {% for block in section.blocks %}
+          {% if block.settings.product_banner_type == 'full' %}         
+              <div class="banner-item{% if block.settings.product_banner_text_alignment == 'left' %} text-left{% elsif block.settings.product_banner_text_alignment == 'right' %} text-right{% else %} text-center{% endif %}" id="banner-item-{{ block.id }}">
+                <div class="img-box">
+                  <a href="{{ block.settings.link }}">
+                    {% if block.settings.image != blank %}
+                      {%- assign img_url = block.settings.image | img_url: 'master' -%}
+
+                      <img data-src="{{ img_url }}"
+                         src="https:{{ img_url }}" alt="{{ block.settings.image.alt | default: shop.name }}" itemprop="logo"
+                         class="lazyautosizes lazyloaded" data-sizes="auto">
+                    {% else %}
+                      <div class="not_img">
+                        1890 x 800px
+                      </div>   
+                    {% endif %}
+                  </a>
+                </div>
+
+                {% if block.settings.title != blank or block.settings.des != blank %}
+                  <div class="content product-banner-wrap">
+                    <div class="content product-banner-inner">
+                      {% if block.settings.title != blank %}
+                      <h3 class="title" style="color: {{ block.settings.title_color}};font-size: {{ block.settings.title_font_size}}; line-height: {{ block.settings.title_font_size}};">
+                        {% render 'multilang' with block.settings.title %}               
+                      </h3>
+                      {% endif %}
+                      
+                      {% if block.settings.des != blank %}
+                      <p class="des" style="color: {{ block.settings.des_color}};font-size: {{ block.settings.des_font_size}};">
+                        {% render 'multilang' with block.settings.des %}  
+                      </p>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+
+              </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="small-banner product-banner">
+        <div class="container">   
+          <div class="row">
+            {% for block in section.blocks %}
+              {% if block.settings.product_banner_type == 'small' %}         
+                  <div class="banner-item col-12 col-md-6 col-lg-6{% if block.settings.product_banner_text_alignment == 'left' %} text-left{% elsif block.settings.product_banner_text_alignment == 'right' %} text-right{% else %} text-center{% endif %}" id="banner-item-{{ block.id }}">
+                    <div class="img-box">
+                      <a href="{{ block.settings.link }}">
+                        {% if block.settings.image != blank %}
+                          {%- assign img_url = block.settings.image | img_url: '770', crop: 'center' -%}
+                          <img data-src="{{ img_url }}"
+                             src="https:{{ img_url }}" alt="{{ block.settings.image.alt | default: shop.name }}" itemprop="logo"
+                             class="lazyautosizes lazyloaded" data-sizes="auto">
+                        {% else %}
+                          <div class="not_img">
+                            770 x 700px
+                          </div>   
+                        {% endif %}
+                      </a>
+                    </div>
+
+                    {% if block.settings.title != blank or block.settings.des != blank %}
+                      <div class="content product-banner-wrap">
+                        <div class="content product-banner-inner">
+                          {% if block.settings.title != blank %}
+                          <h3 class="title" style="color: {{ block.settings.title_color}};font-size: {{ block.settings.title_font_size}}; line-height: {{ block.settings.title_font_size}};">
+                            {% render 'multilang' with block.settings.title %}               
+                          </h3>
+                          {% endif %}
+                          
+                          {% if block.settings.des != blank %}
+                          <p class="des" style="color: {{ block.settings.des_color}};font-size: {{ block.settings.des_font_size}};">
+                            {% render 'multilang' with block.settings.des %}  
+                          </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endif %}
+
+                  </div>
+
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+</div>
+
+<style>
+  #section-{{section.id}}{
+      display: inline-block;
+      width: 100%;
+      margin-top: {{ section.settings.space_on }}px;
+      margin-bottom: {{ section.settings.space_below }}px;
+  }
+</style>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Product Banner Block",
+    "class": "product-banner-block-sections",
+    "max_blocks": 4,
+    "settings": [     
+        {
+          "type": "range",
+          "id": "space_on",
+          "label": "Space on",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "space_below",
+          "label": "Space below",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 30
+        }  
+    ],
+    "blocks": [
+        {
+          "type": "image",
+          "name": "Banner Block",
+          "settings": [	
+              {
+                  "type": "image_picker",
+                  "id": "image",
+                  "label": "Image",
+                  "info": "Recommended Image: Width x Height (770 x 700)PX and (1890 x 800)PX for full banner"
+              },
+              {
+                  "type" : "text",
+                  "id" : "title",
+                  "label" : "Title",
+                  "default" : "Metropolis"
+              },
+              {
+                  "type" : "color",
+                  "id" : "title_color",
+                  "label" : "Title Color",
+                  "default" : "#fff"
+              },
+              {
+                  "type" : "text",
+                  "id" : "title_font_size",
+                  "label" : "Title Font Size",
+                  "default" : "30px"
+              },
+              {
+                  "type" : "textarea",
+                  "id" : "des",
+                  "label" : "Description",
+                  "default" : "Nam tempus turpis at metus scelerisque placerat nulla deumantos sollicitudin delos felis de cosmo milancelos. Pellentesque diam dolor an elementum et lobortis. Nuncos vestibulum interdum turpis."
+              },
+              {
+                  "type" : "color",
+                  "id" : "des_color",
+                  "label" : "Description Color",
+                  "default" : "#fff"
+              },
+              {
+                  "type" : "text",
+                  "id" : "des_font_size",
+                  "label" : "Description Font Size",
+                  "default" : "14px"
+              },
+              {
+                  "type": "url",
+                  "id": "link",
+                  "label": "Link",
+                  "info": "Optional"
+              },
+              {
+                "type": "select",
+                "id": "product_banner_text_alignment",
+                "label": "Text Alignment",
+                "options": [
+                    {
+                        "value": "left",
+                        "label": "Left"
+                    },
+                    {
+                        "value": "center",
+                        "label": "Center"
+                    },
+                    {
+                        "value": "right",
+                        "label": "Right"
+                    }
+                ],
+                "default": "left"
+              },
+              {
+                "type": "select",
+                "id": "product_banner_type",
+                "label": "Banner Type",
+                "options": [
+                    {
+                        "value": "full",
+                        "label": "Full Banner"
+                    },
+                    {
+                        "value": "small",
+                        "label": "Small Banner"
+                    }
+                ],
+                "default": "full"
+              }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Product Banner Block",
+            "category": "block images",
+            "blocks": [
+                {
+                    "type": "image"
+                },
+                {
+                    "type": "image"
+                },
+                {
+                    "type": "image"
+                }
+            ]
+        }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,154 @@
+{% if section.settings.display_policy_block %}
+<section class="policys-block">
+  <div class="container">
+    <div class="row policy-slider has-slick not-arrows" data-infinite="true" data-row="{{ section.blocks.size }}" data-rowtb="3" data-rowtblg="2" data-rowbm="1">
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {%- assign column_size = 'col-12' -%}
+        {% when 2 %}
+          {%- assign column_size = 'col-12 col-md-6' -%}
+        {% when 3 %}
+          {%- assign column_size = 'col-12 col-lg-4' -%}
+        {% when 4 %}
+          {%- assign column_size = 'col-12 col-sm-6 col-lg-4 col-xl-3' -%}
+      {% endcase %}
+      
+      {% for block in section.blocks %}
+      {% if block.settings.policy_text != blank %}
+      <div class="item {{ column_size }}">
+        <div class="policy-item">
+          {% if block.settings.icon != blank %}
+          <span class="policy-icon policy-icon-{{ block.id }}">
+            {{ block.settings.icon }}
+          </span>
+          <style>
+            .policys-block .policy-icon-{{ block.id }} svg {
+              -moz-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              -o-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              -ms-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              -webkit-transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+              transform: rotate({{ block.settings.policy_icon_rotate }}deg);
+            }
+          </style>
+          {% endif %}
+
+          <div class="policy-text">
+            {% render 'multilang' with block.settings.policy_text %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  
+</section>
+{% endif %}
+
+
+<style>
+  .policys-block {
+    background-color: {{ section.settings.bg_policy_block }};
+    color: {{ section.settings.color_policy_text }};
+  }
+  
+  .policys-block .policy-text {
+  	font-size: {{ section.settings.text_font_size }}px;
+  }
+  
+  .policys-block .policy-icon .fa {
+  	font-size: {{ section.settings.icon_font_size }}px;
+  }
+
+  .policys-block .policy-icon svg {
+      width: {{ section.settings.icon_font_size }}px;
+      height: {{ section.settings.icon_font_size }}px;
+      fill: {{ section.settings.color_policy_text }};
+      stroke: none;
+  }
+  .policys-block .policy-icon img {
+    max-height: {{ section.settings.icon_font_size }}px;
+  }
+
+  @media (min-width: 540px) {
+    .policys-block .item {
+      border-left: 1px solid rgba(255, 255, 255, 0);
+    }
+    
+    .policys-block .item + .item {
+      border-left-color: {{ section.settings.color_policy_text | color_modify: 'alpha', 0.3 }};
+    }
+  }
+  
+  @media (max-width: 991px) {
+    .policys-block .policy-item {
+      padding: 16px 0 15px;
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Policies Block",
+	  "max_blocks": 4,
+    "settings": [
+	  {
+        "type" : "checkbox",
+        "id" : "display_policy_block",
+        "label" : "Display Policys Block",
+        "default" : true
+      },
+      {
+        "type" : "color",
+        "id" : "bg_policy_block",
+        "label" : "Background Policys Block",
+        "default" : "#000"
+      },
+      {
+        "type" : "color",
+        "id" : "color_policy_text",
+        "label" : "Color Text",
+        "default" : "#fff"
+      },
+	   {
+        "type" : "text",
+        "id": "text_font_size",
+        "label" : "Text Font Size",
+        "default": "12"
+      },
+	   {
+        "type" : "text",
+        "id": "icon_font_size",
+        "label" : "Icon Font Size",
+        "default": "30"
+      }   
+            
+    ],
+	"blocks": [
+      {
+        "type": "textarea",
+        "name": "Text",
+        "settings": [
+          {
+            "type" : "text",
+            "id": "icon",
+            "label" : "Icon",
+            "info": "[Find your Icon](https://fontawesome.com/v4.7.0/icons/)."
+          },
+          {
+            "type" : "textarea",
+            "id" : "policy_text",
+            "label" : "Text",
+            "default" : "Free Shipping Worldwide"
+          },
+          {
+            "type" : "text",
+            "id" : "policy_icon_rotate",
+            "label" : "Rotate Icon",
+            "default" : "0"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

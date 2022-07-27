@@ -1,0 +1,14 @@
+<div class="collection-template collection">
+  {% section 'collection-header' %}
+  <div class="container">  
+    <div class="halo-collection-content">
+      <div class="row">
+        {% section 'sidebar-filter' %}
+        {% section 'collection-template' %}
+      </div>
+      {% section 'recently-viewed-products' %}
+      {% section 'collection-text-block' %}
+      {% render 'breadcrumb' %}      
+    </div>   
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<header class="page-header">
+  {% if section.settings.display_faq_header_img and section.settings.faq_header_img != blank %}
+    {%- assign img_url = section.settings.faq_header_img | img_url: 'master' -%}
+    <img src="https:{{ img_url}}" alt="{{block.settings.ct_heading}}" 
+      class="lazyload" 
+      data-src="https:{{ img_url }}" 
+      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+      data-aspectratio="{{ img_url.aspect_ratio }}"
+      data-sizes="auto">
+
+  {% endif %}
+  <h2 {% if section.settings.display_faq_header_img and section.settings.faq_header_img != blank %}class="has-image"{% endif %}>
+    {% render 'multilang' with page.title %}
+  </h2>  
+</header>
+
+<style>
+    .faqs-page .page-header h2 {
+      color: {{ section.settings.faqs_header_title_color }};
+      font-size: {{ section.settings.faqs_header_title_font_size }};
+    }
+</style>
+
+{% schema %}
+  {
+    "name": "FAQS Header",
+    "settings": [
+      {
+       "type": "checkbox",
+       "id" : "display_faq_header_img",
+       "label" : "Show Header Image",
+       "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "faq_header_img",
+        "label": "Select image",
+        "info" : "Recommended Image: Width x Height (1890 x 137)PX"
+      },
+      {
+       "type": "color",
+       "id" : "faqs_header_title_color",
+       "label" : "Header Title Color",
+       "default": "#fff"
+      },
+      {
+       "type": "text",
+       "id" : "faqs_header_title_font_size",
+       "label" : "Header Title Font Size",
+       "default": "24px",
+       "info": "Default 24px"
+      }
+  ]
+  }
+{% endschema %}

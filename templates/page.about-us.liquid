@@ -1,0 +1,16 @@
+<div class="page-tpl about-us-1">
+	<div class="container">
+		<header class="page-header">
+		  <h2>
+		    {% render 'multilang' with page.title %}
+		  </h2>  
+		</header>
+	</div>
+	<div class="wrapper-slideshow">
+		{% section 'about-us-slideshow'%}
+	</div>
+	{% section 'about-us-content'%}
+	<div class="container">
+		{% render 'breadcrumb' %}
+	</div>
+</div>

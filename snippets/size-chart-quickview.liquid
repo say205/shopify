@@ -1,0 +1,106 @@
+{% capture img_vendor %}{{ product.vendor | handle | append: '-sizechart.jpg' | file_url }}{% endcapture %}
+
+{% capture img_type %}{{ product.type | handle | append: '-sizechart.jpg' | file_url }}{% endcapture %}
+
+{% if settings.display_size_chart  %}
+<div class="modal fade halo_modal-custom" id="size_chart" role="dialog">
+  <div class="content-size-chart modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        {% if settings.size_chart_title != blank %}
+          <h3 class="modal-title">
+              {% render 'multilang' with settings.size_chart_title %}
+          </h3>
+        {% endif %}
+        <a data-dismiss="modal" href="javascript:void(0)" class="close close-modal" title="{{ 'cart.ajax_cart.close' | t }}">
+			   {% render 'icon-close' %}
+        </a>
+      </div>
+      
+      <div class="modal-body">
+        {% if settings.type_size_chart == 'product_vendor' %}
+          {% if settings.size_chart_heading != blank or settings.size_chart_content != blank %}
+            <div class="modal-text">
+              {% if settings.size_chart_heading != blank %}
+                <h3 class="heading">
+                    {% render 'multilang' with settings.size_chart_heading %}
+                </h3>
+              {% endif %}
+
+              {% if settings.size_chart_content != blank %}
+                <div class="size_chart_desc">
+                  {% render 'multilang' with settings.size_chart_content %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="modal-img">
+            <img src="{{ img_vendor }}" onerror="this.style.display='none'" alt="" />
+          </div>
+
+        {% elsif settings.type_size_chart == 'product_type' %} 
+          {% if settings.size_chart_heading != blank or settings.size_chart_content != blank %}
+            <div class="modal-text">
+              {% if settings.size_chart_heading != blank %}
+                <h3 class="heading">
+                    {% render 'multilang' with settings.size_chart_heading %}
+                </h3>
+              {% endif %}
+
+              {% if settings.size_chart_content != blank %}
+                <div class="size_chart_desc">
+                  {% render 'multilang' with settings.size_chart_content %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="modal-img">
+            <img src="{{ img_type }}" alt="" />
+          </div>
+            
+        {% elsif settings.type_size_chart == 'different' %}
+          {% if product.metafields.c_f['Size Chart Text'] %}
+
+              {% capture text_product %}{{ product.metafields.c_f['Size Chart Text'] }}{% endcapture %}
+              <div class="modal-text">
+                {{ text_product }}
+              </div>
+          {% endif %}
+
+          {% if product.metafields.c_f['Size Chart Image'] %}
+              {% capture img_product %}{{ product.metafields.c_f['Size Chart Image'] }}{% endcapture %}
+              <img class="a" src="{{ img_product }}" alt="{{ settings.size_chart_title }}"/>
+          {% endif %}
+        
+       	{% elsif settings.type_size_chart == 'default' %} 
+
+          {% if settings.size_chart_heading != blank or settings.size_chart_content != blank %}
+            <div class="modal-text">
+              {% if settings.size_chart_heading != blank %}
+                <h3 class="heading">
+                    {% render 'multilang' with settings.size_chart_heading %}
+                </h3>
+              {% endif %}
+
+              {% if settings.size_chart_content != blank %}
+                <div class="size_chart_desc">
+                  {% render 'multilang' with settings.size_chart_content %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="modal-img">
+            <img src="{{ settings.size_chart_img | img_url: "master" }}" alt="{{ settings.size_chart_title }}"/>
+          </div>
+        {% endif %}
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

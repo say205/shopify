@@ -1,148 +1,283 @@
-{{ 'customer.css' | asset_url | stylesheet_tag }}
+{% comment %}
+  This template will be automatically generated for you if the file doesn't exist,
+  but where's the fun in having no control? Define your layout below.
 
-<div class="customer login">
-  <h1 id="recover" tabindex="-1">
-    {{ 'customer.recover_password.title' | t }}
-  </h1>
-  <div>
-    <p>
-      {{ 'customer.recover_password.subtext' | t }}
-    </p>
+  The 'layout settings.customer_layout' line is inserted at the top of every customer account template.
+  Your theme's settings determine to use the 'default' or 'theme' customer templates.
+  More info:
+    - http://www.tetchi.ca/shopify-theme-from-scratch-part-11/
 
-    {%- form 'recover_customer_password' -%}
-      {% assign recover_success = form.posted_successfully? %}
-      <div class="field">
-        <input type="email"
-          value=""
-          name="email"
-          id="RecoverEmail"
-          autocorrect="off"
-          autocapitalize="off"
-          autocomplete="email"
-          {% if form.errors %}
-            aria-invalid="true"
-            aria-describedby="RecoverEmail-email-error"
-            autofocus
-          {% endif %}
-          placeholder="{{ 'customer.login_page.email' | t }}"
-        >
-        <label for="RecoverEmail">
-          {{ 'customer.login_page.email' | t }}
-        </label>
-      </div>
-      {%- if form.errors -%}
-        <small id="RecoverEmail-email-error" class="form__message">
-          <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 13 13">
-            <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-            <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-            <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-            <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
-          </svg>
-          {{ form.errors.messages['form'] }}
-        </small>
-      {%- endif -%}
+  Template note:
+    - All IDs on this template are required to make the forms submit properly
+    - There are two instances of inline JS below. Best practices advise separating this
+      into an external JS file.
+{% endcomment %}
 
-      <button>
-        {{ 'customer.login_page.submit' | t }}
-      </button>
-
-      <a href="#login">
-        {{ 'customer.login_page.cancel' | t }}
-      </a>
-    {%- endform -%}
-  </div>
-
-  <h1 id="login" tabindex="-1">
-    {{ 'customer.login_page.title' | t }}
-  </h1>
-  <div>
-    {%- if recover_success == true -%}
-      <h3 class="form__message" tabindex="-1" autofocus>
-        <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 13 13">
-          <path d="M6.5 12.35C9.73087 12.35 12.35 9.73086 12.35 6.5C12.35 3.26913 9.73087 0.65 6.5 0.65C3.26913 0.65 0.65 3.26913 0.65 6.5C0.65 9.73086 3.26913 12.35 6.5 12.35Z" fill="#428445" stroke="white" stroke-width="0.7"/>
-          <path d="M5.53271 8.66357L9.25213 4.68197" stroke="white"/>
-          <path d="M4.10645 6.7688L6.13766 8.62553" stroke="white">
-        </svg>
-        {{ 'customer.recover_password.success' | t }}
-      </h3>
-    {%- endif -%}
-    {%- form 'customer_login', novalidate: 'novalidate' -%}
-      {%- if form.errors -%}
-        <h2 class="form__message" tabindex="-1" autofocus>
-          <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
-          <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 13 13">
-            <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-            <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-            <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-            <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
-          </svg>
-          {{ 'templates.contact.form.error_heading' | t }}
-        </h2>
-        {{ form.errors | default_errors }}
-      {%- endif -%}
-
-      <div class="field">        
-        <input
-          type="email"
-          name="customer[email]"
-          id="CustomerEmail"
-          autocomplete="email"
-          autocorrect="off"
-          autocapitalize="off"
-          {% if form.errors contains 'form' %}
-            aria-invalid="true"
-          {% endif %}
-          placeholder="{{ 'customer.login_page.email' | t }}"
-        >
-        <label for="CustomerEmail">
-          {{ 'customer.login_page.email' | t }}
-        </label>
-      </div>
-
-      {%- if form.password_needed -%}
-        <div class="field">          
-          <input
-            type="password"
-            value=""
-            name="customer[password]"
-            id="CustomerPassword"
-            autocomplete="current-password"
-            {% if form.errors contains 'form' %}
-              aria-invalid="true"
-            {% endif %}
-            placeholder="{{ 'customer.login_page.password' | t }}"
-          >
-          <label for="CustomerPassword">
-            {{ 'customer.login_page.password' | t }}
-          </label>
-        </div>
-
-        <a href="#recover">
-          {{ 'customer.login_page.forgot_password' | t }}
-        </a>
-      {%- endif -%}
-
-      <button>
-        {{ 'customer.login_page.sign_in' | t }}
-      </button>
-
-      <a href="{{ routes.account_register_url }}">
-        {{ 'customer.login_page.create_account' | t }}
-      </a>
+{% layout settings.customer_layout %}
+<div class="login-page custom-acc-page">
+  <div class="container">
       
-    {%- endform -%}
-  </div>
-  
-  {%- if shop.checkout.guest_login -%}
-    <div>
-      <hr>
-      <h2>{{ 'customer.login_page.guest_title' | t }}</h2>
 
-      {%- form 'guest_login' -%}
-        <button>
-          {{ 'customer.login_page.guest_continue' | t }}
-        </button>
-      {%- endform -%}
+    <div class="wrapper-login-customer">
+      <header class="page-header">
+        <h1 {% if settings.enable_multilang %}data-translate="customer.login.account"{%endif%}>
+          {{ 'customer.login.account' | t }}
+        </h1>
+      </header>
+      
+      <div class="wrapper-content">
+        <div class="col-left returning-customer">
+          <div class="wrapper-title">
+            <div class="box-title"{% if settings.enable_multilang %} data-translate="customer.login.returning_customer_customer"{%endif%}>
+              {{ 'customer.login.returning_customer' | t }} 
+            </div>
+
+            {% if settings.enable_multilang %}
+            <div class="title lang1">
+              {{ settings.login_text_desc | split: '|' | first }}
+            </div>
+            <div class="title lang2">
+              {{ settings.login_text_desc | split: '|' | last }}
+            </div>
+            {% else %}
+            <div class="title">
+              {{ settings.login_text_desc | split: '|' | first }}
+            </div>
+            {% endif %}
+
+          </div>
+          
+          {% comment %}
+          If a user has successfully requested a new password, the form.posted_successfully? variable
+          is set to true within the 'recover_customer_password' form only. Within that form you'll see
+          us assign a variable 'reset_success' to true, which is used in JS to show our success message.
+          {% endcomment %}
+
+          <div class="note form-success" id="resetSuccess" style="display:none;">
+            We've sent you an email with a link to update your password.
+          </div>
+
+          {% comment %}
+          This form must use 'customer_login'
+          {% endcomment %}
+
+          {% form 'customer_login' %}
+
+          {{ form.errors | default_errors }}
+          <div class="form-group">
+            <label for="customer_email">
+              <span {% if settings.enable_multilang %}data-translate="customer.login.email"{%endif%}>
+                {{ 'customer.login.email' | t }}
+              </span>
+              <em>*</em>
+            </label>
+            <input type="email" value="" name="customer[email]" id="customer_email" {% if form.errors contains "email" %}class="error"{% endif %}>
+          </div>
+
+          {% if form.password_needed %}
+          <div class="form-group">
+            <label for="customer_password">
+              <span {% if settings.enable_multilang %}data-translate="customer.login.password"{%endif%}>
+                {{ 'customer.login.password' | t }}
+              </span>
+              <em>*</em>
+            </label>
+            <input type="password" value="" name="customer[password]" id="customer_password" {% if form.errors contains "password" %}class="error"{% endif %}>
+          </div>
+          {% endif %}
+
+          <div class="action-btn">
+            <input type="submit" {% if settings.enable_multilang %}data-translate="customer.login.login"{%endif%} class="btn" value="{{ 'customer.login.login' | t }}">
+            <div class="last">
+              <a href="#" onclick="showRecoverPasswordForm();return false;" {% if settings.enable_multilang %}data-translate="customer.login.forgot_password"{%endif%}>
+                {{ 'customer.login.forgot_password' | t }}
+              </a>
+              <span class="or_text">
+                {{ 'cart.label.or' | t }}
+              </span>
+              <a class="button-return" href="{{ routes.cart_url | split: 'cart' | first }}" {% if settings.enable_multilang %}data-translate="customer.login.cancel"{%endif%}>
+                {{ 'customer.login.cancel' | t }}
+              </a>
+            </div>
+          </div>
+          {% endform %}
+
+          {% comment %}
+          This page uses JavaScript to show/hide the recover password form
+          {% endcomment %}
+
+          <div id="recover_password" style="display: none;">        
+            <div {% if settings.enable_multilang %}data-translate="customer.recover_password.subtext"{%endif%}>
+              {{ 'customer.recover_password.subtext' | t }}
+            </div>
+
+            {% comment %}
+            This form must use 'recover_customer_password'
+            {% endcomment %}
+
+            {% form 'recover_customer_password' %}
+
+            {{ form.errors | default_errors }}
+
+            {% if form.posted_successfully? %}
+            {% assign reset_success = true %}
+            {% endif %}
+
+            {% comment %}
+            form.posted_successfully? is true only inside this form, but we want
+            to show a success message outside of it. To do so, set the variable
+            reset_success to true, then use JS to show our success message above.
+            {% endcomment %}
+
+            {% if form.posted_successfully? %}
+            {% assign resetPassword = true %}
+            {% endif %}
+
+            <div class="form-group">
+              <label for="recover-email" {% if settings.enable_multilang %}data-translate="customer.recover_password.email"{%endif%}>
+                {{ 'customer.recover_password.email' | t }}
+              </label>
+              <input type="email" value="" name="email" id="recover-email" {% if settings.enable_multilang %}data-translate="customer.recover_password.email" translate-item="placeholder" {%endif%} placeholder="{{ 'customer.recover_password.email' | t }}" >
+            </div>
+
+            <div class="action-btn">
+              <input type="submit" class="btn" {% if settings.enable_multilang %}data-translate="customer.recover_password.submit"{%endif%} value="{{ 'customer.recover_password.submit' | t }}">
+              <span class="or_text" {% if settings.enable_multilang %}data-translate="cart.label.or"{%endif%}>
+                {{ 'cart.label.or' | t }}
+              </span>
+              <a class="cancel_text" href="#" onclick="hideRecoverPasswordForm();return false;" {% if settings.enable_multilang %}data-translate="customer.recover_password.cancel"{%endif%}>
+                {{ 'customer.recover_password.cancel' | t }}
+              </a>        
+            </div>
+            {% endform %}
+
+            {% comment %}
+            If accounts are set as optional, the following will be shown as an option
+            during checkout, not on the default /login page.
+            {% endcomment %}
+
+            {% if shop.checkout.guest_login %}
+            <hr>
+            <h2 {% if settings.enable_multilang %}data-translate="customer.login.guest_title"{%endif%}>
+              {{ 'customer.login.guest_title' | t }}
+            </h2>
+
+            {% form 'guest_login' %}
+            <input type="submit" {% if settings.enable_multilang %}data-translate="customer.login.guest_continue"{%endif%} class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+            {% endform %}
+            {% endif %}
+          </div>
+        </div>
+        
+        <div class="col-right new-customer">
+          <div class="wrapper-title">
+            <div class="box-title"{% if settings.enable_multilang %} data-translate="customer.login.new_customer"{%endif%}>
+              {{ 'customer.login.new_customer' | t }} 
+            </div>
+
+            {% if settings.enable_multilang %}
+            <div class="title lang1">
+              {{ settings.register_text | split: '|' | first }}
+            </div>
+            <div class="title lang2">
+              {{ settings.register_text | split: '|' | last }}
+            </div>
+            {% else %}
+            <div class="title">
+              {{ settings.register_text | split: '|' | first }}
+            </div>
+            {% endif %}
+
+            {% if settings.enable_multilang %}
+            <div class="desc lang1">
+              {{ settings.register_text_desc | split: '|' | first }}
+            </div>
+            <div class="desc lang2">
+              {{ settings.register_text_desc | split: '|' | last }}
+            </div>
+            {% else %}
+            <div class="desc">
+              {{ settings.register_text_desc | split: '|' | first }}
+            </div>
+            {% endif %}
+
+          </div>
+
+          {% form 'create_customer' %}
+
+          <div class="form-group">
+            <label for="first_name">
+              <span {% if settings.enable_multilang %}data-translate="customer.register.first_name"{%endif%}>
+                {{ 'customer.register.first_name' | t }}
+              </span>
+            </label>
+            <input type="text" value="" name="customer[first_name]" id="first_name" {% if form.errors contains "first_name" %}class="error"{% endif %} >
+          </div>
+
+          <div class="form-group">
+            <label for="last_name">
+              <span {% if settings.enable_multilang %}data-translate="customer.register.last_name"{%endif%}>
+                {{ 'customer.register.last_name' | t }}
+              </span>
+            </label>      
+            <input type="text" value="" name="customer[last_name]" id="last_name" {% if form.errors contains "last_name" %}class="error"{% endif %} >
+          </div>
+
+          <div class="form-group">
+            <label for="email">
+              <span {% if settings.enable_multilang %}data-translate="customer.register.email"{%endif%}>
+                {{ 'customer.register.email' | t }}
+              </span>
+              <em>*</em>
+            </label>      
+            <input type="email" value="" name="customer[email]" id="email" {% if form.errors contains "email" %}class="error"{% endif %}  >
+          </div>
+
+          <div class="form-group">
+            <label for="password">
+              <span {% if settings.enable_multilang %}data-translate="customer.register.password"{%endif%}>
+                {{ 'customer.register.password' | t }}
+              </span>
+              <em>*</em>
+            </label>      
+            <input type="password" value="" name="customer[password]" id="create_password" {% if form.errors contains "password" %}class="error"{% endif %}>
+          </div>
+
+          <div class="action-btn">
+            <input type="submit" {% if settings.enable_multilang %}data-translate="customer.register.submit"{%endif%} value="{{ 'customer.register.submit' | t }}" class="btn btn-padd42">
+          </div>
+          {% endform %}
+
+
+        </div>
+      </div>            
     </div>
-  {%- endif -%}
+  </div>
 </div>
+{% render 'breadcrumb' %} 
+<script>
+  /*
+    Show/hide the recover password form when requested.
+    I'd suggest using some CSS3 transitions to make this change look cool,
+    but this gets the job done for now.
+  */
+  function showRecoverPasswordForm() {
+    $('#recover_password').show();
+    $('#customer_login').hide();
+  }
+
+  function hideRecoverPasswordForm() {
+    $('#recover_password').hide();
+    $('#customer_login').show();
+  }
+
+  // Allow deep linking to the recover password form
+  if (window.location.hash == '#recover') {
+    showRecoverPasswordForm() 
+  }
+
+  // reset_success is only true when the reset form is
+  {% if reset_success %}
+    $('#resetSuccess').show();
+  {% endif %}
+</script>

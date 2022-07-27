@@ -1,0 +1,35 @@
+<div class="seal-logos">
+  <ul>
+    {% if settings.seal_logo_1_img != blank %}
+    <li>
+      <a href="{{ settings.seal_logo_1_link }}">
+        <img src="{{ settings.seal_logo_1_img | img_url: 'x36' }}" alt=""/>
+      </a>
+    </li>
+    {% endif %}
+    
+    {% if settings.seal_logo_2_img != blank %}
+    <li>
+      <a href="{{ settings.seal_logo_2_link }}">
+        <img src="{{ settings.seal_logo_2_img | img_url: 'x36' }}" alt=""/>
+      </a>
+    </li>
+    {% endif %}
+    
+    {% if settings.seal_logo_3_img != blank %}
+    <li>
+      <a href="{{ settings.seal_logo_3_link }}">
+        <img src="{{ settings.seal_logo_3_img | img_url: 'x36' }}" alt=""/>
+      </a>
+    </li>
+    {% endif %}
+    
+    {% if settings.seal_logo_4_img != blank %}
+    <li>
+      <a href="{{ settings.seal_logo_4_link }}">
+        <img src="{{ settings.seal_logo_4_img | img_url: 'x36' }}" alt=""/>
+      </a>
+    </li>
+    {% endif %}       
+  </ul>
+</div>

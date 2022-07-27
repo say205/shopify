@@ -1,0 +1,40 @@
+{% if settings.product_layout == "default" %}
+  {% render 'product-default' %}
+{% elsif settings.product_layout =="custom" %}
+  {% render 'product-custom' %}
+{% endif %}
+
+{% if template contains 'product' %}
+<div class="modal fade halo_modal-custom" id="video_product" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a data-dismiss="modal" class="close close-modal" title="{{ 'cart.ajax_cart.close' | t }}" href="javascript:void(0)">
+                    {% render 'icon-close' %}
+                </a>
+            </div>
+
+            <div class="modal-body">
+                <div class="videoWrapper">
+                    {%  if product.description contains 'iframe' %}
+                    {% assign src = product.description | split:'<iframe' | last | split:'</iframe>' | first %}
+                    <iframe {{src}}> </iframe>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% render 'ask_an_expert' %}
+
+
+<div class="themevale_popup">
+  {% section 'someone-purchased' %}
+  {% section 'cookie_popup' %}
+  {% if settings.display_sticky %} 
+    {% render 'sticky-add-to-cart' %}
+  {% endif %}
+</div>
+
+{% endif %}

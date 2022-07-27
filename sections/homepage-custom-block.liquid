@@ -1,0 +1,267 @@
+{% if section.blocks.size > 0 %}
+<div class="home-spotlight-block" id="section-{{section.id}}">
+  <div class="container">
+    {% if section.settings.homepage_custom_block_title != blank %}
+    <div class="widget-title">   
+      <h3 class="box-title">
+        <span class="title"> 
+          {% render 'multilang' with section.settings.homepage_custom_block_title %}
+        </span>
+      </h3>
+      {% if section.settings.homepage_custom_block_des != blank %}
+      <p>
+        {% render 'multilang' with section.settings.homepage_custom_block_des %}
+      </p>        
+      {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="row spotlight-{{ section.blocks.size }}-blocks has-slick not-arrows"  autoplay= "false" data-infinite="false" data-row="{% if section.blocks.size == '1' %}1{% elsif  section.blocks.size == '2' %}2{% else %}3{% endif %}" data-rowtb="2" data-rowtblg="2" data-rowbm="1">
+      {% for block in section.blocks %}
+
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {%- assign column_size = 'col-12' -%}
+        {% when 2 %}
+          {%- assign column_size = 'col-12 col-md-6' -%}
+        {% when 3 %}
+            {%- assign column_size = 'col-12 col-md-6 col-lg-4' -%}        
+      {% endcase %}
+               
+      <div class="{{ column_size }}">
+        <div class="spotlight-item" id="spotlight-item-{{ block.id }}">
+          <div class="img-box">
+            <a href="{{ block.settings.link }}">
+              {% if block.settings.image != blank %}
+            
+              {%- assign img_url = block.settings.image | img_url: '800', crop: 'center' -%}
+
+              <img data-src="https:{{ img_url }}" alt="{{ block.settings.image.alt | default: shop.name }}" itemprop="logo" {% render 'lazy_load' %}>
+
+              {% else %}
+
+              <div class="not_img">
+                570 x 370px
+              </div>   
+              {% endif %}
+            </a>
+
+            {% if block.settings.video_link != blank %}
+              <div class="video">
+                <a data-fancybox="" href="#video-popup" data-src-set="https://www.youtube.com/embed/{{ block.settings.video_link }}?enablejsapi=1&rel=0&autoplay=1&mute=1">
+                  {% render 'icon-youtube-2' %}
+                </a>
+                <div id="video-popup" class="fancybox-video" style="display: none;">
+                  <div class="videoInner">
+                    <div class="videoWrapper">
+                      <iframe class="youtube-player lazyload" id="player_{{ block.id }}" width="100%" height="100%" data-video-id="{{ block.settings.video_link }}" src="https://www.youtube.com/embed/{{ block.settings.video_link }}?enablejsapi=1&rel=0&autoplay=1&mute=1" frameborder="0" allowfullscreen=""></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <style>
+                  #section-{{section.id}} .spotlight-item .video a {
+                    color: {{ block.settings.video_icon_color }}
+                  }
+              </style>
+            {% endif %}
+          </div>
+
+          {% if block.settings.title != blank or block.settings.des != blank %}
+          <a href="{{ block.settings.link }}">
+            <div class="content spotlight-wrap">
+              <div class="content spotlight-inner">
+                {% if block.settings.title != blank %}
+                <h3 class="title" style="color: {{ block.settings.title_color}};font-size: {{ block.settings.title_font_size}}; line-height: {{ block.settings.title_font_size}};">
+                  {% render 'multilang' with block.settings.title %}               
+                </h3>
+                <style>
+                  #section-{{section.id}} #spotlight-item-{{ block.id }}:hover .spotlight-inner .title span{
+                    background-image: linear-gradient(transparent 97%, {{ block.settings.title_color}} 3%);
+                    background-repeat: repeat-x;
+                    background-position-y: -5px;
+                  }
+                </style>
+                {% endif %}
+                
+                {% if block.settings.des != blank %}
+                <p class="des" style="color: {{ block.settings.des_color}};font-size: {{ block.settings.des_font_size}};">
+                  {% render 'multilang' with block.settings.des %}  
+                </p>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+          {% endif %}
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.homepage_custom_block_button != blank %}
+    <div class="home-spotlight-button">
+        <a class="btn" href="{{section.settings.homepage_custom_block_link}}" title="{{section.settings.homepage_custom_block_button}}">
+            {% render 'multilang' with section.settings.homepage_custom_block_button %}
+        </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<style>
+  #section-{{section.id}}{
+      display: inline-block;
+      width: 100%;
+      margin-top: {{ section.settings.space_on }}px;
+      margin-bottom: {{ section.settings.space_below }}px;
+  }
+</style>
+<script type="text/javascript">
+  $( document ).ready(function() {
+      $('.home-spotlight-block .video a').click(function(){
+        var demo = $(this).data('src-set');
+        $('#video-popup iframe').attr('src',demo);
+      })
+  });
+</script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Homepage Custom Block",
+    "class": "home-custom-block-spotlight-sections",
+    "settings": [     
+        {
+          "type": "range",
+          "id": "space_on",
+          "label": "Space on",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "space_below",
+          "label": "Space below",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 60
+        },
+        {
+            "type": "text",
+            "id": "homepage_custom_block_title",
+            "label": "Title",
+            "default": "Custom Block"
+        },
+        {
+            "type" : "textarea",
+            "id" : "homepage_custom_block_des",
+            "label" : "Description",
+            "default" : "Nam tempus turpis at metus scelerisque placerat nulla deumantos sollicitudino."
+        },
+        {
+            "type" : "text",
+            "id" : "homepage_custom_block_button",
+            "label" : "Button",
+            "default" : "View All Videos"
+        },
+        {
+            "type": "url",
+            "id": "homepage_custom_block_link",
+            "label": "Button Link",
+            "info": "Optional"
+        }  
+    ],
+    "blocks": [
+        {
+          "type": "image",
+          "name": "Custom Block",
+          "settings": [	
+              {
+                  "type": "image_picker",
+                  "id": "image",
+                  "label": "Image",
+                  "info": "Recommended Image: Width x Height (570 x 370)PX"
+              },
+              {
+                  "type" : "text",
+                  "id" : "title",
+                  "label" : "Title",
+                  "default" : "Metropolis"
+              },
+              {
+                  "type" : "color",
+                  "id" : "title_color",
+                  "label" : "Title Color",
+                  "default" : "#fff"
+              },
+              {
+                  "type" : "text",
+                  "id" : "title_font_size",
+                  "label" : "Title Font Size",
+                  "default" : "30px"
+              },
+              {
+                  "type" : "textarea",
+                  "id" : "des",
+                  "label" : "Description",
+                  "default" : "Nam tempus turpis at metus de deumantos"
+              },
+              {
+                  "type" : "color",
+                  "id" : "des_color",
+                  "label" : "Description Color",
+                  "default" : "#fff"
+              },
+              {
+                  "type" : "text",
+                  "id" : "des_font_size",
+                  "label" : "Description Font Size",
+                  "default" : "14px"
+              },
+              {
+                  "type": "url",
+                  "id": "link",
+                  "label": "Link",
+                  "info": "Optional"
+              },
+              {
+                  "type": "text",
+                  "id": "video_link",
+                  "label": "YouTube video ID",
+                  "default": "eTCtDW7O1aM",
+                  "info": "[Find your YouTube video ID](https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id)."
+              },
+              {
+                  "type" : "color",
+                  "id" : "video_icon_color",
+                  "label" : "Video Icon Color",
+                  "default" : "#fff"
+              }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Homepage Custom Block",
+            "category": "block images",
+            "blocks": [
+                {
+                    "type": "image"
+                },
+                {
+                    "type": "image"
+                },
+                {
+                    "type": "image"
+                }
+            ]
+        }
+    ]
+  }
+{% endschema %}

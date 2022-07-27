@@ -1,0 +1,85 @@
+{% assign file_extension = 'png' %}
+
+{% for product_option in pro.options_with_values %}
+    {% assign is_color = false %}
+    {% assign is_size = false %}
+    {% assign option_index = 0 %}
+
+    {% assign option_index = forloop.index0 %}
+
+    {%- assign options_color = 'color, colour, couleur, colore, farbe, 색,色, färg, farve' -%}
+    {%- assign options_size = 'size, taille, bröße, tamanho, tamaño, koko, サイズ' -%}
+
+    {% assign downcased_option_1 = product_option.name | downcase %}
+
+    {% if options_color contains downcased_option_1 %}
+        {% assign is_color = true %}
+    {% endif %}
+
+    {% assign downcased_option_2 = product_option.name | downcase %}
+    {% if options_size contains  downcased_option_2 %}
+        {% assign is_size = true %}
+    {% endif %}
+
+    {% if downcased_option_2 contains 'size' %}
+        {% assign is_size = true %}
+    {% endif %}
+    
+    {% unless product_option.name == 'Custom Engraving' %}
+    <div class="swatch {{ product_option.name | handle }} {% if is_color %} color{% elsif is_size %} size{% endif %}" data-option-idx="{{ option_index }}">
+        <div class="header">
+            <span>
+                {{ product_option.name | split: '|' | first | strip  }} <em>*</em>
+            </span>
+        </div>
+
+        {% assign values = '' %}
+
+        {% for variant in pro.variants %}
+
+            {%- assign current_variant = pro.selected_or_first_available_variant -%}
+
+            {% assign value = variant.options[option_index] %}
+
+            {% unless values contains value %}
+
+                {% assign values = values | join: ';' %}
+                {% assign values = values | append: ';' | append: value %}
+                {% assign values = values | split: ';' %}
+
+                <div data-value="{{ value | escape }}" class="swatch-element{% if is_color %} color{% elsif is_size %} size{% endif %} {{ value | handle }}{% if variant.available %} available{% else %} soldout{% endif %}">
+                    {% if is_color %}
+                        <div class="tooltip">
+                            {{ value }}
+                        </div>
+                    {% endif %}
+
+                    <input data-variant="{{ variant.id }}" id="swatch-{{ option_index }}-{{ value | handle }}-{{ pro.id }}" type="radio" name="option-{{ option_index }}-{{ pro.id }}" value="{{ value | escape }}" {% unless variant.available %} disabled{% endunless %}/>
+
+                    {% if is_color %}
+                        {% if settings.color_swatch_style == 'normal' %}
+                            <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ pro.id }}">
+                                <span class="bgImg" style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | file_url }})"></span>
+                                <span class="crossed-out"> </span>
+                            </label>
+
+                        {% else %}
+                            <label class="swatch_variant_img" for="swatch-{{ option_index }}-{{ value | handle }}-{{ pro.id }}">
+                                <span class="bgImg" {% if variant.image.src != blank %}style="background-image: url({{ variant.image.src | product_img_url: '50x' }}); background-size: contain;"{% else %}style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | file_url }})"{% endif %}></span>
+                                <span class="crossed-out"> </span>
+                            </label>
+                        {% endif %}
+
+                    {% else %}
+                        <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ pro.id }}">
+                            {{ value }}
+                            <span class="crossed-out"> </span>
+                        </label>
+                    {% endif %}
+                </div>
+            {% endunless %}
+
+        {% endfor %}
+    </div>
+    {% endunless %}
+{% endfor %}

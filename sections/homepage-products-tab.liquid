@@ -1,0 +1,133 @@
+{% if section.settings.show_home_products_tab%}
+<section class="home-product-tab" data-id="{{section.id}}" id="product-tab-{{section.id}}" data-product-tabs>
+  <div class="container">
+    <div class="widget-product">
+      <ul class="nav nav-tabs list-product-tabs">
+        {% for block in section.blocks %}
+        <li>
+          <a href="#tab-product-{{ block.id }}" data-target="#product-tab-{{ block.id }}" data-product-tabTop data-href="/collections/{{ block.settings.collection }}?view=new-json" class="tab-links {% if forloop.first %}active {% endif %}" id="tab-{{ block.id }}" data-id="{{ block.id }}" data-toggle="tab" role="tab" aria-selected="true">
+            {% render 'multilang' with block.settings.title %}
+          </a>
+          <span class="dots"></span>
+        </li>
+        {% endfor %}
+      </ul>
+      
+      <div class="tab-content product-tabs-content">
+        {% for block in section.blocks %}
+        
+        <div class="tab-content{% if forloop.first %} show active {% endif %}" role="tabpanel" id="product-tab-{{ block.id }}" data-product-TabContent>
+            <div class="products-grid row {{ row }}{% if section.settings.collection_layout == 'carousel' %}collection-carousel{% endif %}" data-row="{{ section.settings.products_tab_results_per_row }}" data-rowlt="5" data-rowtb="3" data-rowtblg="3" data-rowbm="2">
+                <div class="loading col-12"></div>
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+  </div>
+</section>
+{% endif %}
+{% schema %}
+  {
+    "name": "Products Tab",
+	  "max_blocks" : 5,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_home_products_tab",
+        "label": "Enable",
+        "default": true
+      },
+	    {
+        "type": "range",
+        "id": "space_on",
+        "label": "Space on",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "space_below",
+        "label": "Space below",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 25
+      },
+      {
+        "type": "select",
+        "id": "collection_layout",
+        "label": "Layout",
+        "default": "carousel",
+        "options": [
+            {
+                "value": "grid",
+                "label": "Grid"
+            },
+            {
+                "value": "carousel",
+                "label": "Carousel"
+            }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "products_tab_results_per_row",
+        "label": "Products per row",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ],
+        "default": "6"
+     }
+	],
+  "blocks" : [
+      {
+          "type" : "ProductTabs",
+          "name" : "Product Tabs",
+          "settings":[
+			{
+				"type" : "text",
+				"id" : "title",
+				"label" : "Title Tabs",
+				"default" : "Men's"
+			},
+  		{
+        "type" : "collection",
+        "id" : "collection",
+        "label" : "Collection to use"
+      }    
+		]
+      }
+  ],
+	"presets": [
+      {
+        "name": "Products Tab",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}
+<style>
+  #product-tab-{{section.id}}{
+    margin-top: {{ section.settings.space_on }}px;
+    margin-bottom: {{ section.settings.space_below }}px;
+  }
+</style>

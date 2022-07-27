@@ -1,0 +1,74 @@
+<li class="blog-item">
+  <h3 class="article-title">
+    <a href="{{ article.url }}">
+      {% render 'multilang' with article.title %}
+    </a>
+  </h3>
+
+  <div class="blog_author">
+    {% comment %}
+    Don't be fooled, the ? in comments_enabled? is part of the liquid tag.
+    {% endcomment %}
+    {% if section.settings.blog_show_author %}
+    <span class="article__author">
+      by {{article.author}}
+    </span>
+    {% endif %}
+
+    {% if section.settings.blog_show_date %}
+    <span class="article__date">
+      {{ article.published_at | time_tag: format: 'month_day_year' }}
+    </span>
+    {% endif %}
+
+    {% if blog.comments_enabled? %}
+    <a href="{{ article.url }}#comments"{% if settings.enable_multilang %} data-translate="blogs.comments.comments_with_count|count:{{article.comments_count}}"{%endif%}>
+      {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+    </a>
+    {% endif %}
+    
+  </div> 
+
+  <div class="article-details">
+    {% if article.image %}
+    {% assign image_alt = article.title | escape %}
+    <div class="article-img">
+      {{ article | img_url: '1024x1024' | img_tag: image_alt, 'article__image' | link_to: article.url }}
+      
+      {% if article.tags.size > 0 %}
+      <div class="article-tags" style="display: none;">
+        <span class="list--inline" aria-label="{{ 'blogs.article.tags' | t }}">
+          {% for tag in article.tags limit: 1 %}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tag-label">
+            {{ tag }}
+          </a>
+          {% endfor %}
+        </span>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="rte article-excerpt">
+      <div class="des">
+        {% if settings.enable_multilang %}
+        <div class="lang1">
+          {{ article.excerpt_or_content | strip_html | truncatewords: 63 | split:"[lang2]" | first | split:"|" |first}}
+        </div>
+        <div class="lang2">
+          {{ article.excerpt_or_content | strip_html | truncatewords: 63 | split:"[lang2]" | last | split:"|" |last }}
+        </div>
+        {% else %}
+        {{ article.excerpt_or_content | strip_html | truncatewords: 63  | split:"[lang2]" | first | split:"|" |first}}
+        {% endif %}
+      </div>
+      
+      <div class="actions">
+        <a href="{{ article.url }}" class="btn btn-read-more" {% if settings.enable_multilang %}data-translate="blogs.article.read_more"{% endif %}>
+          {{ 'blogs.article.read_more' | t }}
+        </a>
+        
+      </div>            
+    </div>
+  </div>
+</li>

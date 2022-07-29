@@ -1,46 +1,21 @@
-{% comment %}
-        Renders a pagination bar
-
-        Accepts:
-        - paginate: {Object} Paginate Liquid object (required)
-
-        Usage:
-        {% include 'pagination', paginate: paginate %}
-{% endcomment %}
-<ul class="list--inline pagination">
-    {% unless paginate.previous.is_link %}
-        <li class="pagination__item pagination__item--first">
-            <button class="btn btn--tertiary" disabled>
-                <svg class="icon"><use xlink:href="#icon-chevron-left" /></svg>
-            </button>
-        </li>
-        {% else %}
-        <li class="pagination__item pagination__item--first">
-            <a href="{{ paginate.previous.url }}" class="btn btn--tertiary" aria-label="link">
-                <svg class="icon"><use xlink:href="#icon-chevron-left" /></svg>
-            </a>
-        </li>
-    {% endunless %}
-    {% for part in paginate.parts %}
-        {% if part.is_link %}
-            <li class="pagination__item">
-                <a href="{{ part.url }}" class="pagination__link" aria-label="link">{{ part.title }}</a>
-            </li>
-        {% else %}
-            <li class="pagination__item pagination__link--current"><span class="pagination__link">{{ part.title }}</span></li>
-        {% endif %}
-    {% endfor %}
-    {% unless paginate.next.is_link %}
-        <li class="pagination__item pagination__item--last">
-            <button class="btn btn--tertiary" disabled>
-                <svg class="icon"><use xlink:href="#icon-chevron-right" /></svg>
-            </button>
-        </li>
-    {% else %}
-        <li class="pagination__item pagination__item--last">
-            <a href="{{ paginate.next.url }}" class="btn btn--tertiary" aria-label="link">
-                <svg class="icon"><use xlink:href="#icon-chevron-right" /></svg>
-            </a>
-        </li>
-    {% endunless %}
-</ul>
+<nav class="nt-pagination w__100 tc {{class}}">
+  <ul class="pagination-page page-numbers">
+    {%- if paginate.previous -%}
+    <li><a class="prev page-numbers{{cl_a}}" href="{{ paginate.previous.url }}">{{ 'collections.general.previous' | t }}</a></li>
+    {%- endif -%}
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+      <li><a class="page-numbers{{cl_a}}" href="{{ part.url }}">{{ part.title }}</a></li>
+      {%- else -%}
+        {%- if part.title == paginate.current_page -%}
+        <li><span class="page-numbers current">{{ part.title }}</span></li>
+        {%- else -%}
+        <li><span class="page-numbers lh__1">{{ part.title }}</span></li>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if paginate.next -%}
+    <li><a href="{{ paginate.next.url }}" class="next page-numbers{{cl_a}}">{{ 'collections.general.next' | t }}</a></li>
+    {%- endif -%}
+  </ul>
+</nav>

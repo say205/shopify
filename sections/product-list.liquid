@@ -10,6 +10,10 @@
     {% assign border_bottom = 'halo-section-border-bottom' %}
 {% endif %}
 
+{% if section.settings.hero_align %}
+    {% assign hero_text_align = "halo-section-align-" | append: section.settings.hero_align %}
+{% endif %}
+
 {% assign top = top | default: section.settings.top %}
 {% assign bottom = bottom | default: section.settings.bottom %}
 
@@ -46,7 +50,7 @@
 
 {% assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
 
-<div class="halo-section padding-top-{{ top }} padding-bottom-{{ bottom }} {{ background_color }} {{ border_top }} {{ border_bottom }}" data-section-id="{{ section.id }}" data-section-type="product-list">
+<div class="halo-section padding-top-{{ top }} padding-bottom-{{ bottom }} {{ background_color }} {{ border_top }} {{ border_bottom }} {{ hero_text_align }}" data-section-id="{{ section.id }}" data-section-type="product-list">
     {% if section.settings.enabled_banner %}
     <div class="hero hero--{{ section.settings.hero_size }} overlay--{{ section.settings.overlay }}">
         {% if section.settings.effect == 'parallax' %}
@@ -83,7 +87,7 @@
     {% endif %}
     <div class="container {% if section.settings.enabled_banner %}hero__content--custom{% endif %} {% if section.settings.countdown != blank %}has-countdown{% endif %}">
         {% if section.settings.title != blank %}
-            <div class="section-header text-center overlay--{{ section.settings.overlay }}">
+            <div class="section-header overlay--{{ section.settings.overlay }}">
                 {% if section.settings.sub_title != blank %}
                     <h5 class="subtitle">{{ section.settings.sub_title }}</h5>
                 {% endif %}
@@ -256,6 +260,26 @@
             "type": "image_picker",
             "id": "image",
             "label": "Image"
+        },
+        {
+            "type": "select",
+            "id": "hero_align",
+            "label": "Section Text Align",
+            "default": "center",
+            "options": [
+                {
+                    "label": "Left",
+                    "value": "left"
+                },
+                {
+                    "label": "Center",
+                    "value": "center"
+                },
+                {
+                    "label": "Right",
+                    "value": "right"
+                }
+            ]
         },
         {
             "type": "select",

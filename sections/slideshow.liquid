@@ -1,3 +1,5 @@
+{{ 'slideshow.css' | asset_url | stylesheet_tag }}
+
 {%- assign arrows = arrows | default: section.settings.show_arrows -%}
 {%- assign dots = dots | default: section.settings.show_dots -%}
 {%- assign fadein = fadein | default: section.settings.show_fadein -%}
@@ -73,8 +75,22 @@
             }'
         {% endif %}>
         {% for block in section.blocks %}
+
+            {% if block.settings.button_layout %}
+                {% assign class_button_layout = "button-" | append: block.settings.button_layout %}
+            {% endif %}
+
+            {% if block.settings.button_radius %}
+                {% assign class_button_radius = "button-radius-" | append: block.settings.button_radius %}
+            {% endif %}
+
+            {% if block.settings.image_position %}
+                {% assign class_image_position = "slideshow-image-" | append: block.settings.image_position %}
+            {% endif %}
+
             {% assign img_url = block.settings.slide_image | img_url: 'master' %}
-            <div class="slideshow__item{% if block.settings.slide_image_mobile != blank %} slideshow__image--mobile{% endif %}">
+
+            <div class="slideshow__item{% if block.settings.slide_image_mobile != blank %} slideshow__image--mobile{% endif %} {{ class_image_position }}">
                 {% if block.type == 'image'%}
                     <div class="slideshow__image">
                         {% if block.settings.slide_image == blank %}
@@ -142,7 +158,7 @@
                             <div class="slideshow__count title__countdownWrapper"><div class="title__countdown" data-countdown="{{ block.settings.countdown }}"></div></div>
                         {% endif %}
                         {% if block.settings.slide_button != blank %}
-                            <a href="{{ block.settings.link }}" class="slideshow__button btn btn--primary animated" aria-label="link">
+                            <a href="{{ block.settings.link }}" class="slideshow__button btn btn--primary animated {{ class_button_layout }} {{ class_button_radius }}" aria-label="link">
                                 {{ block.settings.slide_button }}
                             </a>
                         {% endif %}
@@ -324,6 +340,26 @@
                         "info": "Use image for mobile to load pages faster"
                     },
                     {
+                        "type": "select",
+                        "id": "image_position",
+                        "label": "Image Position",
+                        "default": "default",
+                        "options": [
+                        {
+                            "value": "default",
+                            "label": "Default"
+                        },
+                        {
+                            "value": "23_left",
+                            "label": "2/3 Left"
+                        },
+                        {
+                            "value": "23_right",
+                            "label": "2/3 Right"
+                        }
+                        ]
+                    },
+                    {
                         "type": "header",
                         "content": "Content"
                     },
@@ -385,6 +421,36 @@
                         "id": "countdown",
                         "label": "Time Countdown",
                         "info": "2020/12/12 0:0:00"
+                    },
+                    {
+                        "type": "select",
+                        "id": "button_layout",
+                        "label": "Button Layout",
+                        "default": "flat",
+                        "options": [
+                        {
+                            "value": "flat",
+                            "label": "Flat"
+                        },
+                        {
+                            "value": "border",
+                            "label": "Border"
+                        },
+                        {
+                            "value": "line",
+                            "label": "Line"
+                        }
+                        ]
+                    },
+                    {
+                        "type": "range",
+                        "id": "button_radius",
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "unit": "px",
+                        "label": "Button Radius",
+                        "default": 4
                     },
                     {
                         "type" : "text",

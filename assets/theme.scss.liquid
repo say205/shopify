@@ -6,7 +6,30 @@
         - The output CSS is compressed and comments are removed
         - You cannot use native CSS/Sass @imports in this file without a build script
 ==============================================================================*/
+@font-face {
+    font-family: 'Cormorant';
+    src: url('../assets/Cormorant-Regular.woff2') format('woff2'),
+        url('../assets/Cormorant-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Jost';
+    src: url('../assets/Jost-Regular.woff2') format('woff2'),
+        url('../assets/Jost-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
+body{
+    font-family: 'Jost' !important;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Cormorant' !important;
+}
 /*================ SASS HELPERS ================*/
 /*============================================================================
     Convert pixels to ems

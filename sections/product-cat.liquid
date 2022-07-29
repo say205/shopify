@@ -1,0 +1,232 @@
+{{ 'product-cat.css' | asset_url | stylesheet_tag }}
+
+{% assign top = top | default: section.settings.top %}
+{% assign bottom = bottom | default: section.settings.bottom %}
+{% assign gap = gap | default: section.settings.gap %}
+{% assign collection_list = section.settings.collection_list %}
+{% assign product_limit = product_limit | default: section.settings.limit %}
+{% assign column = column | default: section.settings.column %}
+
+<section class="halo-section padding-top-{{ top }} padding-bottom-{{ bottom }} gap-{{ gap }}">
+        <div class="container">
+            <h2>This week’s highlight</h2>
+        </div>
+    {% if section.settings.hero_layout == 'fixed_width' %}
+        <div class="container">
+    {% else %}
+        <div class="container-fluid">
+    {% endif %}
+        <div class="inner">
+            <div class="slideshow slideshow--{{ section.settings.slide_height }} slideshow-product-cat" 
+                data-slick='{
+                    "rtl": false,
+                    "rows": 0,
+                    "dots": true,
+                    "arrows": false,
+                    "fade": false,
+                    "autoplay": false,
+                    "autoplaySpeed": 2000,
+                    "infinite": true,
+                    "adaptiveHeight": true,
+                    "slidesToShow": {{ column }},
+                    "slidesToScroll": 4,
+                    "mobileFirst": true,
+                    "prevArrow": "<div class=&apos;slick-prev slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-left&apos; /></svg></div>", 
+                    "nextArrow": "<div class=&apos;slick-next slick-arrow&apos;><svg class=&apos;icon&apos;><use xlink:href=&apos;#icon-chevron-right&apos; /></svg></div>",
+                    "responsive": [
+                        {
+                            "breakpoint": 1100,
+                            "settings": {
+                                "dots": true,
+                                "arrows": true
+                            }
+                        }
+                    ]
+                }' 
+            >
+            {% for collection in collection_list %}
+                <div class="slideshow-item">
+                    {% include 'collection-grid-item', collection: collection %}
+                </div>
+            {% else %}
+                {% for i in (1..product_limit) %}
+                    <div class="slideshow-item">
+                        <div class="product-card">
+                            <div class="product-card__image">
+                                <a class="product-card__link" href="#">
+                                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                </a>
+                            </div>
+                            <div class="product-card__content">
+                                <h4 class="product-card__title">{{ 'homepage.onboarding.product_title' | t }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% schema %}
+    {
+    "name": "Product Cat",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "range",
+            "id": "top",
+            "label": "Spacing Top",
+            "default": 30,
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "bottom",
+            "label": "Spacing bottom",
+            "default": 30,
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "gap",
+            "label": "Gap",
+            "default": 30,
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "px"
+        },
+        {
+            "type": "select",
+            "id": "hero_layout",
+            "label": "Layout",
+            "default": "full_width",
+            "options": [
+                {
+                    "label": "Full width",
+                    "value": "full_width"
+                },
+                {
+                    "label": "Fixed width",
+                    "value": "fixed_width"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "slide_height",
+            "label": "Slide Height",
+            "default": "medium",
+            "options": [
+                {
+                    "label": "Small",
+                    "value": "small"
+                },
+                {
+                    "label": "Medium",
+                    "value": "medium"
+                },
+                {
+                    "label": "Large",
+                    "value": "large"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "show_arrows",
+            "label": "Show Arrows",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show dots",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_fadein",
+            "label": "Effect Fade In",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "autoplay",
+            "label": "Slideshow Auto Play",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "autorotate_speed",
+            "label": "Change slides every",
+            "max": 9,
+            "min": 3,
+            "step": 1,
+            "unit": "s",
+            "default": 5
+        },
+        {
+            "type": "header",
+            "content": "Layout"
+        },
+        {
+            "type": "collection_list",
+            "id": "collection_list",
+            "label": "Collections",
+            "limit": 8
+        },
+        {
+            "type": "range",
+            "id": "column",
+            "label": "Column",
+            "min": 1,
+            "max": 6,
+            "step": 1,
+            "default": 4
+        },
+        {
+            "type": "range",
+            "id": "limit",
+            "label": "Limit product",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "default": 6
+        },          
+        {
+            "type": "header",
+            "content": "Custom Color"
+        },
+        {
+            "type": "checkbox",
+            "id": "custom_color",
+            "label": "Turn on custom color",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "color_heading",
+            "label": "Heading Color"
+        }
+    ],
+    "presets": [
+            {
+            "name": "Product Cat",
+            "category": "ADVANCED LAYOUT"
+            }
+        ]
+    }
+{% endschema %}

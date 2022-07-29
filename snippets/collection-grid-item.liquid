@@ -18,9 +18,7 @@
 
 <div class="collection-grid-item">
     {% unless collection_image == blank %}
-        <div class="collection-grid-item__overlay" style="background-image: url('{{ collection_image | img_url: 'master' }}')">
-            <svg class="icon"><use xlink:href="#icon-plus" /></svg>
-        </div>
+        <div class="collection-grid-item__overlay" style="background-image: url('{{ collection_image | img_url: 'master' }}')"></div>
     {% else %}
         {% if collection == empty %}
             <div class="collection-grid-item__overlay">
@@ -34,15 +32,13 @@
     
     <div class="collection-grid-item__title-wrapper">
         <h3 class="collection-grid-item__title">
+            
             {% if collection.title == blank %}
                 {{ 'homepage.onboarding.collection_title' | t }}
             {% else %}
                 {{ collection.title }}
             {% endif %}
         </h3>
-        <p class="collection-grid-item__product" ">
-            {{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}
-        </p>
     </div>
 
     <div class="collection-grid-item__button">

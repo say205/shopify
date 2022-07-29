@@ -1,5 +1,8 @@
+{{ 'hero-2.css' | asset_url | stylesheet_tag }}
+
 {% assign top = top | default: section.settings.top %}
 {% assign bottom = bottom | default: section.settings.bottom %}
+{% assign gap = gap | default: section.settings.gap %}
 {% if section.settings.custom_color %}
 <style>
     [data-section-id='{{ section.id }}'] .hero__heading {
@@ -26,7 +29,7 @@
 </style>
 {% endif %}
 
-<div class="halo-section padding-top-{{ top }} padding-bottom-{{ bottom }}" data-section-id="{{ section.id }}" data-section-type="hero">
+<div class="halo-section padding-top-{{ top }} padding-bottom-{{ bottom }} gap-{{ gap }}" data-section-id="{{ section.id }}" data-section-type="hero">
     {% if section.settings.hero_layout == 'fixed_width' %}
         <div class="container">
     {% else %}
@@ -67,7 +70,7 @@
                         {% endif %}
                     </div>
 
-                    <div class="hero__content content--middle">
+                    <div class="hero__content content--{{ block.settings.alignment }}">
                         {% if block.settings.title != blank %}
                             <h2 class="hero__heading mega-title--{{ section.settings.text_size }}">
                                 {{ block.settings.title | upcase }}
@@ -126,6 +129,16 @@
             "unit": "px"
         },
         {
+            "type": "range",
+            "id": "gap",
+            "label": "Gap",
+            "default": 30,
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "px"
+        },
+        {
             "type": "header",
             "content": "Banner Image"
         },   
@@ -168,6 +181,16 @@
                     "value": "large"
                 }
             ]
+        },
+        {
+            "type": "range",
+            "id": "hero_size",
+            "label": "Section Height",
+            "default": 30,
+            "min": 0,
+            "max": 100,
+            "step": 10,
+            "unit": "px"
         },
         {
             "type": "select",
@@ -252,9 +275,37 @@
             "name": "Banner Block",
             "settings": [
                 {
+                    "type": "header",
+                    "content": "Image"
+                },
+                {
                     "type": "image_picker",
                     "id": "image",
                     "label": "Image"
+                },
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "select",
+                    "id": "alignment",
+                    "label": "Text alignment",
+                    "default": "left",
+                    "options": [
+                    {
+                        "value": "left",
+                        "label": "Left"
+                    },
+                    {
+                        "value": "middle",
+                        "label": "Center"
+                    },
+                    {
+                        "value": "right",
+                        "label": "Right"
+                    }
+                    ]
                 },
                 {
                     "type": "text",

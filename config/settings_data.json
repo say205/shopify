@@ -1404,12 +1404,15 @@
           "165907664783580c24-0": {
             "type": "image",
             "settings": {
+              "image_position": "default",
               "style_layout": "style-1",
               "alignment": "left",
               "slide_heading": "",
               "slide_heading_sub": "Slideshow Sub Heading",
               "slide_des": "Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.",
               "countdown": "",
+              "button_layout": "flat",
+              "button_radius": 4,
               "slide_button": "Shop The Collection",
               "link": ""
             }
@@ -1437,10 +1440,66 @@
           "color_dot": "",
           "color_dot_border": ""
         }
+      },
+      "165940321610fce7eb": {
+        "type": "hero-2",
+        "blocks": {
+          "165940321610fce7eb-0": {
+            "type": "banner_block",
+            "settings": {
+              "sub_title": "Editor’s Picks",
+              "title": "#Trending Now",
+              "text": "",
+              "button": "Shop Now",
+              "button_link": ""
+            }
+          },
+          "165940321610fce7eb-1": {
+            "type": "banner_block",
+            "settings": {
+              "sub_title": "Editor’s Picks",
+              "title": "#Trending Now",
+              "text": "",
+              "button": "Shop Now",
+              "button_link": ""
+            }
+          },
+          "56abef61-a534-4bab-94d4-190fa37f3138": {
+            "type": "banner_block",
+            "settings": {
+              "sub_title": "Editor’s Picks",
+              "title": "#Trending Now",
+              "text": "",
+              "button": "Shop Now",
+              "button_link": ""
+            }
+          }
+        },
+        "block_order": [
+          "165940321610fce7eb-0",
+          "165940321610fce7eb-1",
+          "56abef61-a534-4bab-94d4-190fa37f3138"
+        ],
+        "settings": {
+          "top": 30,
+          "bottom": 30,
+          "hero_layout": "full_width",
+          "hero_size": "normal",
+          "overlay": "dark",
+          "text_size": "medium",
+          "custom_color": false,
+          "color_heading": "",
+          "color_heading_sub": "",
+          "color_text": "",
+          "color_button": "",
+          "border_button": "",
+          "bg_button": ""
+        }
       }
     },
     "content_for_index": [
-      "165907664783580c24"
+      "165907664783580c24",
+      "165940321610fce7eb"
     ]
   }
 }
